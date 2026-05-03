@@ -287,20 +287,31 @@ async function openEmailClient(i) {
   const s     = getSender();
   const html  = buildHtmlEmail(emp, s);
   const plain = buildPlainText(emp, s);
+
+  let htmlCopied = false;
   try {
     if (window.ClipboardItem) {
       await navigator.clipboard.write([new ClipboardItem({
         'text/html':  new Blob([html],  { type: 'text/html' }),
         'text/plain': new Blob([plain], { type: 'text/plain' }),
       })]);
+      htmlCopied = true;
     } else {
       await navigator.clipboard.writeText(plain);
     }
   } catch(e) {}
-  window.location.href = 'mailto:' + emp.email
-    + '?subject=' + encodeURIComponent(buildSubject());
+
+  // Always include plain-text body so the email is never blank
+  const a = document.createElement('a');
+  a.href = 'mailto:' + emp.email
+    + '?subject=' + encodeURIComponent(buildSubject())
+    + '&body='    + encodeURIComponent(plain);
+  a.click();
+
   markSent(i);
-  toast('Conteúdo copiado — cole com Ctrl+V no corpo do e-mail que abriu');
+  toast(htmlCopied
+    ? firstName(emp.name) + ': Outlook aberto — Cole Ctrl+V para versão com design'
+    : firstName(emp.name) + ': Outlook aberto com conteúdo em texto');
 }
 
 let sentSet = new Set(JSON.parse(localStorage.getItem('ga-sent') || '[]'));
@@ -401,12 +412,6 @@ function toast(msg) {
   clearTimeout(t._tid);
   t._tid = setTimeout(() => t.classList.remove('show'), 2000);
 }
-
-document.querySelectorAll && document.addEventListener('DOMContentLoaded', () => {
-  renderList();
-  document.getElementById('f-sender').addEventListener('input', () => EMPLOYEES.forEach((_,i) => refreshPreview(i)));
-  document.getElementById('f-role').addEventListener('input',   () => EMPLOYEES.forEach((_,i) => refreshPreview(i)));
-});
 
 renderList();
 document.getElementById('f-sender').addEventListener('input', () => EMPLOYEES.forEach((_,i) => refreshPreview(i)));

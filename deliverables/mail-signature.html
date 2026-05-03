@@ -95,6 +95,9 @@ const LOGO_URL = (location.origin === 'null' || location.protocol === 'file:')
 function buildSignatureHtml(data) {
   // Email-client-safe: tables, inline styles, no external CSS, no flexbox.
   const navy = '#002341', crimson = '#92153A', black = '#1A1A1A', gray = '#4A4B4D', divider = '#BFC8CF';
+  const roleHtml  = data.role  ? `<div style="font-size:12px;color:${black};margin-top:2px;">${data.role}</div>` : '';
+  const deptHtml  = data.dept  ? `<div style="font-size:11px;color:${gray};margin-top:2px;">${data.dept}</div>` : '';
+  const phoneHtml = data.phone ? `<span style="color:${gray};">T</span>&nbsp;${data.phone}<br>\n        ` : '';
   return (
 `<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;color:${black};">
   <tr>
@@ -103,12 +106,9 @@ function buildSignatureHtml(data) {
     </td>
     <td style="padding:0 0 0 14px;vertical-align:middle;font-family:Arial,Helvetica,sans-serif;">
       <div style="font-size:15px;font-weight:700;color:${navy};letter-spacing:0.02em;">${data.name}</div>
-      <div style="font-size:12px;color:${black};margin-top:2px;">${data.role}</div>
-      <div style="font-size:11px;color:${gray};margin-top:2px;">${data.dept}</div>
-      <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:6px 0 4px 0;">More than security</div>
+      ${roleHtml}${deptHtml}<div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:6px 0 4px 0;">More than security</div>
       <div style="font-size:11px;color:${black};line-height:1.55;">
-        <span style="color:${gray};">T</span>&nbsp;${data.phone}<br>
-        <span style="color:${gray};">E</span>&nbsp;<a href="mailto:${data.email}" style="color:${crimson};text-decoration:none;font-weight:700;">${data.email}</a><br>
+        ${phoneHtml}<span style="color:${gray};">E</span>&nbsp;<a href="mailto:${data.email}" style="color:${crimson};text-decoration:none;font-weight:700;">${data.email}</a><br>
         <span style="color:${gray};">W</span>&nbsp;<a href="https://${data.site.replace(/^https?:\\/\\//,'')}" style="color:${navy};text-decoration:none;font-weight:700;">${data.site}</a>
       </div>
     </td>
@@ -121,12 +121,12 @@ function buildSignatureHtml(data) {
 
 function getData() {
   return {
-    name: document.getElementById('f-name').value || ' ',
-    role: document.getElementById('f-role').value || ' ',
-    dept: document.getElementById('f-dept').value || ' ',
-    phone: document.getElementById('f-phone').value || ' ',
-    email: document.getElementById('f-email').value || ' ',
-    site: document.getElementById('f-site').value || ' ',
+    name:  document.getElementById('f-name').value.trim()  || ' ',
+    role:  document.getElementById('f-role').value.trim()  || '',
+    dept:  document.getElementById('f-dept').value.trim()  || '',
+    phone: document.getElementById('f-phone').value.trim() || '',
+    email: document.getElementById('f-email').value.trim() || ' ',
+    site:  document.getElementById('f-site').value.trim()  || 'www.gaadvising.com',
   };
 }
 
