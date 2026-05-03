@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-mails Individuais · Global Advising</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--ga-navy-50); font-family: Arial, sans-serif; color: var(--ga-black); }
+
+  .site-header {
+    background: #fff; border-bottom: 1px solid var(--ga-navy-100);
+    padding: 0 40px; display: flex; align-items: center; justify-content: space-between;
+    height: 56px; position: sticky; top: 0; z-index: 50;
+  }
+  .site-header img { height: 28px; }
+  .site-header .strap { font-size: 10px; font-weight: 700; color: var(--ga-gray-700); letter-spacing: 0.20em; text-transform: uppercase; }
+
+  .hero { background: var(--ga-navy-500); padding: 40px 40px 36px; }
+  .hero-inner { max-width: 900px; margin: 0 auto; }
+  .hero-tag { font-size: 10px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 10px; }
+  .hero h1 { font-family: Corbel, "Lato", sans-serif; font-size: 34px; font-weight: 700; color: #fff; margin: 0 0 10px; letter-spacing: -0.01em; }
+  .hero-lead { font-size: 14px; color: rgba(255,255,255,0.68); line-height: 1.55; max-width: 580px; margin: 0 0 20px; }
+  .hero-steps { display: flex; gap: 24px; flex-wrap: wrap; }
+  .hero-step { display: flex; align-items: flex-start; gap: 10px; }
+  .hero-step .n { font-family: var(--ga-font-mono); font-size: 13px; font-weight: 700; color: var(--ga-crimson-500); min-width: 20px; }
+  .hero-step .t { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.4; }
+
+  .toolbar { max-width: 900px; margin: 0 auto; padding: 20px 40px 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .toolbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .sender-fields { display: flex; gap: 8px; flex-wrap: wrap; }
+  .sender-fields input {
+    font-family: Arial, sans-serif; font-size: 12px; padding: 7px 10px;
+    border-radius: 2px; border: 1px solid var(--ga-navy-100); color: var(--ga-black); outline: none; width: 180px;
+  }
+  .sender-fields input:focus { border-color: var(--ga-crimson-500); box-shadow: 0 0 0 2px rgba(146,21,58,0.12); }
+  .sender-label { font-size: 10px; font-weight: 700; color: var(--ga-navy-500); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; align-self: center; }
+  .count { font-size: 12px; color: var(--ga-gray-700); white-space: nowrap; }
+  .count b { color: var(--ga-navy-500); font-weight: 700; }
+
+  .list { max-width: 900px; margin: 0 auto; padding: 16px 40px 60px; display: flex; flex-direction: column; gap: 10px; }
+
+  /* ── EMAIL ROW ── */
+  .email-row {
+    background: #fff; border: 1px solid var(--ga-navy-100); border-radius: 6px; overflow: hidden;
+  }
+  .row-head {
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: center; gap: 12px; padding: 14px 18px;
+    cursor: pointer; user-select: none;
+  }
+  .row-head:hover { background: var(--ga-navy-50); }
+  .row-person { display: flex; align-items: center; gap: 14px; }
+  .row-avatar {
+    width: 36px; height: 36px; border-radius: 50%; background: var(--ga-navy-500);
+    display: flex; align-items: center; justify-content: center;
+    font-family: Corbel, "Lato", sans-serif; font-size: 14px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .row-name { font-size: 14px; font-weight: 700; color: var(--ga-navy-500); line-height: 1.2; }
+  .row-email { font-family: var(--ga-font-mono); font-size: 11px; color: var(--ga-gray-700); margin-top: 2px; }
+  .row-actions { display: flex; gap: 6px; align-items: center; }
+  .btn { font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 7px 13px; border-radius: 2px; border: none; cursor: pointer; white-space: nowrap; transition: background 150ms; }
+  .btn-mailto { background: var(--ga-crimson-500); color: #fff; text-decoration: none; display: inline-flex; align-items: center; }
+  .btn-mailto:hover { background: var(--ga-crimson-700); }
+  .btn-copy { background: var(--ga-navy-500); color: #fff; }
+  .btn-copy:hover { background: var(--ga-navy-700); }
+  .btn-toggle { background: transparent; color: var(--ga-gray-700); border: 1px solid var(--ga-navy-100) !important; border: none; font-size: 12px; padding: 6px 10px; }
+  .btn-toggle:hover { background: var(--ga-navy-50); }
+  .row-sent { font-size: 10px; font-weight: 700; color: var(--ga-success); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* expanded email preview */
+  .row-body { display: none; border-top: 1px solid var(--ga-navy-100); }
+  .row-body.open { display: block; }
+  .email-preview {
+    padding: 18px 20px 18px 68px; background: #f6f8fa;
+    border-bottom: 1px solid var(--ga-navy-100);
+  }
+  .ep-subject { font-size: 12px; font-weight: 700; color: var(--ga-navy-500); margin-bottom: 12px; }
+  .ep-subject span { font-size: 10px; font-weight: 400; color: var(--ga-gray-700); margin-right: 6px; }
+  .ep-body {
+    font-size: 13px; line-height: 1.65; color: var(--ga-black);
+    white-space: pre-wrap; font-family: Arial, sans-serif;
+  }
+  .ep-link { color: var(--ga-crimson-500); font-weight: 700; word-break: break-all; }
+
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--ga-navy-500); color: #fff;
+    padding: 10px 18px; border-radius: 2px; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em; opacity: 0; transition: opacity 150ms; pointer-events: none; z-index: 300;
+  }
+  .toast.show { opacity: 1; }
+
+  .email-row.sent { border-color: var(--ga-success); }
+
+  @media (max-width: 640px) {
+    .hero, .toolbar, .list { padding-left: 16px; padding-right: 16px; }
+    .email-preview { padding-left: 16px; }
+    .sender-fields input { width: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <img src="../assets/logo-global-advising.png" alt="Global Advising">
+  <span class="strap">More than security</span>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Rollout · 2026</div>
+    <h1>E-mails Individuais — Equipe GA</h1>
+    <p class="hero-lead">Um e-mail personalizado por colaborador, com link direto para a assinatura de cada um. Clique <strong style="color:#fff;">Abrir no e-mail</strong> para abrir no Outlook/Mail com tudo preenchido, ou <strong style="color:#fff;">Copiar</strong> para colar manualmente.</p>
+    <div class="hero-steps">
+      <div class="hero-step"><span class="n">1</span><span class="t">Preencha seu nome e cargo abaixo</span></div>
+      <div class="hero-step"><span class="n">2</span><span class="t">Clique <b style="color:#fff;">Abrir no e-mail</b> em cada linha</span></div>
+      <div class="hero-step"><span class="n">3</span><span class="t">Envie — o destinatário e o texto já estão prontos</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-left">
+    <span class="sender-label">Remetente:</span>
+    <div class="sender-fields">
+      <input id="f-sender" value="Ronen Ben Efraim" placeholder="Seu nome">
+      <input id="f-role"   value="Diretor"           placeholder="Seu cargo">
+    </div>
+  </div>
+  <div class="count"><b id="sent-count">0</b> / 30 enviados</div>
+</div>
+
+<div class="list" id="list"></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BASE_URL = 'https://ronen1969.github.io/ga-design-system';
+const SIG_BASE = BASE_URL + '/deliverables/signatures-batch.html#';
+
+const EMPLOYEES = [
+  { name: 'Adalberto Pugliesi',                  email: 'adalberto@gaadvising.com' },
+  { name: 'Adriano Santos',                       email: 'adriano@gaadvising.com' },
+  { name: 'Alessandro Benedito Vieira da Silva',  email: 'alessandro.silva@gaadvising.com' },
+  { name: 'André Bergamini',                      email: 'agb@gaadvising.com' },
+  { name: 'Carlos Vinícius da Silva',             email: 'carlos.silva@gaadvising.com' },
+  { name: 'Cassio Theodoro',                      email: 'cassio@gaadvising.com' },
+  { name: 'Douglas Ribeiro de Faria',             email: 'douglas.faria@gaadvising.com' },
+  { name: 'Edimilson Onofre',                     email: 'edimilson@gaadvising.com' },
+  { name: 'Fabio Torres',                         email: 'fabio.torres@gaadvising.com' },
+  { name: 'Fabricio Amar',                        email: 'fabricio@gaadvising.com' },
+  { name: 'Francisco de Assis Pereira',           email: 'assis@gaadvising.com' },
+  { name: 'Gustavo Santana de Camargo',           email: 'gustavo.camargo@gaadvising.com' },
+  { name: 'Helio Onofre',                         email: 'helio@gaadvising.com' },
+  { name: 'Jeffersonn da Silva Cunha',            email: 'jeffersonn.cunha@gaadvising.com' },
+  { name: 'José Francisco Rodrigues Cavalcante',  email: 'cavalcante@gaadvising.com' },
+  { name: 'Luann Lucas Lopes',                    email: 'luann.lopes@gaadvising.com' },
+  { name: 'Lucas Morais',                         email: 'lucas.morais@gaadvising.com' },
+  { name: 'Matheus Mendes Neves',                 email: 'matheus@gaadvising.com' },
+  { name: 'Naoya Ishikawa',                       email: 'naoya@gaadvising.com' },
+  { name: 'Rafael Victor Oliveira Zago',          email: 'rafael.zago@gaadvising.com' },
+  { name: 'Rodolfo Esteves da Silva',             email: 'rodolfo.esteves@gaadvising.com' },
+  { name: 'Rogério Pedra',                        email: 'rogerio@gaadvising.com' },
+  { name: 'Ronen Ben Efraim',                     email: 'ronen@gaadvising.com' },
+  { name: 'Roney Valentim',                       email: 'v.roney@gaadvising.com' },
+  { name: 'Uri Sade',                             email: 'urisade@gaadvising.com' },
+  { name: 'Valdemir Garcia de Oliveira',          email: 'valdemir@gaadvising.com' },
+  { name: 'Vitória Borges Souza',                 email: 'vitoria@gaadvising.com' },
+  { name: 'Wagner Wesley Melo Ventura',           email: 'wagner@gaadvising.com' },
+  { name: 'Wellington Luiz Freitas Rodrigues',    email: 'wellington.rodrigues@gaadvising.com' },
+  { name: 'Yoram Shvartz',                        email: 'yoram@gaadvising.com' },
+];
+
+function firstName(full) { return full.split(' ')[0]; }
+function initials(full)   { return full.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function anchor(email)    { return email.split('@')[0]; }
+
+function getSender() {
+  return {
+    name: document.getElementById('f-sender').value.trim() || 'Ronen Ben Efraim',
+    role: document.getElementById('f-role').value.trim()   || 'Diretor',
+  };
+}
+
+function buildBody(emp, sender) {
+  const link = SIG_BASE + anchor(emp.email);
+  return `${firstName(emp.name)},
+
+Acesse seu link direto para configurar sua assinatura de e-mail Global Advising:
+
+${link}
+
+Passos:
+1. Preencha cargo, departamento e telefone
+2. Clique "Copiar assinatura"
+3. Cole nas configurações do Outlook ou Gmail
+
+Leva menos de 3 minutos. Dúvidas? Responda este e-mail.
+
+Atenciosamente,
+${sender.name}
+${sender.role} · Global Advising
+contato@gaadvising.com · www.gaadvising.com`;
+}
+
+function buildSubject() {
+  return 'Ação necessária: configure sua assinatura de e-mail GA';
+}
+
+function mailtoHref(emp) {
+  const s = getSender();
+  return 'mailto:' + emp.email
+    + '?subject=' + encodeURIComponent(buildSubject())
+    + '&body='    + encodeURIComponent(buildBody(emp, s));
+}
+
+let sentSet = new Set(JSON.parse(localStorage.getItem('ga-sent') || '[]'));
+
+function updateSentCount() {
+  document.getElementById('sent-count').textContent = sentSet.size;
+}
+
+function markSent(i) {
+  sentSet.add(i);
+  localStorage.setItem('ga-sent', JSON.stringify([...sentSet]));
+  updateSentCount();
+  const row = document.querySelector(`.email-row[data-idx="${i}"]`);
+  if (row) {
+    row.classList.add('sent');
+    const badge = row.querySelector('.row-sent');
+    if (badge) badge.style.display = 'inline';
+  }
+}
+
+function toggleBody(i) {
+  const body = document.getElementById('body-' + i);
+  body.classList.toggle('open');
+  refreshPreview(i);
+}
+
+function refreshPreview(i) {
+  const body = document.getElementById('body-' + i);
+  if (!body.classList.contains('open')) return;
+  const emp = EMPLOYEES[i];
+  const s   = getSender();
+  const txt = buildBody(emp, s);
+  const link = SIG_BASE + anchor(emp.email);
+  // highlight link in preview
+  const escaped = txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const highlighted = escaped.replace(
+    link.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),
+    `<span class="ep-link">${link}</span>`
+  );
+  body.querySelector('.ep-body').innerHTML = highlighted;
+  body.querySelector('.ep-subject .subj-text').textContent = buildSubject();
+  // update mailto
+  const btn = document.querySelector(`.email-row[data-idx="${i}"] .btn-mailto`);
+  if (btn) btn.href = mailtoHref(emp);
+}
+
+function renderList() {
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  EMPLOYEES.forEach((emp, i) => {
+    const isSent = sentSet.has(i);
+    const row = document.createElement('div');
+    row.className = 'email-row' + (isSent ? ' sent' : '');
+    row.dataset.idx = i;
+    row.innerHTML = `
+      <div class="row-head" onclick="toggleBody(${i})">
+        <div class="row-person">
+          <div class="row-avatar">${initials(emp.name)}</div>
+          <div>
+            <div class="row-name">${emp.name}</div>
+            <div class="row-email">${emp.email}</div>
+          </div>
+        </div>
+        <div class="row-actions">
+          ${isSent ? '<span class="row-sent">✓ Enviado</span>' : '<span class="row-sent" style="display:none">✓ Enviado</span>'}
+          <a class="btn btn-mailto" href="${mailtoHref(emp)}" onclick="event.stopPropagation();markSent(${i})">Abrir no e-mail ↗</a>
+          <button class="btn btn-copy" onclick="event.stopPropagation();copyEmail(${i})">Copiar</button>
+          <button class="btn btn-toggle">Ver ▾</button>
+        </div>
+      </div>
+      <div class="row-body" id="body-${i}">
+        <div class="email-preview">
+          <div class="ep-subject"><span>Assunto:</span><span class="subj-text">${buildSubject()}</span></div>
+          <div class="ep-body"></div>
+        </div>
+      </div>`;
+    list.appendChild(row);
+  });
+  updateSentCount();
+}
+
+async function copyEmail(i) {
+  const emp = EMPLOYEES[i];
+  const s   = getSender();
+  const text = 'Para: ' + emp.email + '\nAssunto: ' + buildSubject() + '\n\n' + buildBody(emp, s);
+  try {
+    await navigator.clipboard.writeText(text);
+    markSent(i);
+    toast('E-mail de ' + firstName(emp.name) + ' copiado');
+  } catch { toast('Falha ao copiar'); }
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+document.querySelectorAll && document.addEventListener('DOMContentLoaded', () => {
+  renderList();
+  document.getElementById('f-sender').addEventListener('input', () => EMPLOYEES.forEach((_,i) => refreshPreview(i)));
+  document.getElementById('f-role').addEventListener('input',   () => EMPLOYEES.forEach((_,i) => refreshPreview(i)));
+});
+
+renderList();
+document.getElementById('f-sender').addEventListener('input', () => EMPLOYEES.forEach((_,i) => refreshPreview(i)));
+document.getElementById('f-role').addEventListener('input',   () => EMPLOYEES.forEach((_,i) => refreshPreview(i)));
+</script>
+
+</body>
+</html>

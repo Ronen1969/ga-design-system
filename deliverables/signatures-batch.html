@@ -322,6 +322,7 @@ function renderGrid() {
   EMPLOYEES.forEach((emp, i) => {
     const card = document.createElement('div');
     card.className = 'card';
+    card.id = emp.email.split('@')[0];
     card.dataset.idx = i;
     card.dataset.name = emp.name.toLowerCase();
     card.dataset.email = emp.email.toLowerCase();
