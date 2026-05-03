@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Table</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 16px 20px; background: #fff; font-family: Arial, sans-serif; }
+  .cap { font-size: 10px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  table { width: 660px; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; font-weight: 700; color: var(--ga-navy-500); border-bottom: 2px solid var(--ga-navy-500); padding: 8px 6px; }
+  td { border-bottom: 1px solid var(--ga-navy-100); padding: 8px 6px; color: var(--ga-black); }
+  .b { display: inline-flex; height: 18px; padding: 0 8px; border-radius: 2px; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; align-items: center; }
+  .crit { background: var(--ga-crimson-500); color: #fff; }
+  .mod { background: var(--ga-warning); color: #fff; }
+  .low { background: var(--ga-success); color: #fff; }
+</style></head>
+<body>
+<div class="cap">Tabela 1 · Matriz de Risco</div>
+<table>
+  <thead><tr><th>Categoria</th><th>Localização</th><th>Status</th><th>Ref.</th></tr></thead>
+  <tbody>
+    <tr><td>Acesso perimetral</td><td>Portaria Sul</td><td><span class="b crit">Crítico</span></td><td>GA-0142</td></tr>
+    <tr><td>CFTV</td><td>Estacionamento</td><td><span class="b mod">Moderado</span></td><td>GA-0143</td></tr>
+    <tr><td>Controle de chaves</td><td>Recepção</td><td><span class="b low">Baixo</span></td><td>GA-0144</td></tr>
+  </tbody>
+</table>
+</body></html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Page Margins</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 14px; background: var(--ga-navy-50); font-family: Arial, sans-serif; display: flex; gap: 24px; align-items: center; justify-content: center; height: 252px; box-sizing: border-box; }
+  .page { background: #fff; width: 200px; height: 240px; position: relative; box-shadow: 0 2px 8px rgba(0,35,65,0.08); }
+  .inner { position: absolute; top: 30px; bottom: 20px; left: 30px; right: 20px; border: 1px dashed var(--ga-crimson-500); }
+  .lab { position: absolute; font-family: var(--ga-font-mono); font-size: 9px; color: var(--ga-crimson-500); background: #fff; padding: 0 3px; }
+  .top { top: -6px; left: 8px; }
+  .bot { bottom: -6px; left: 8px; }
+  .lft { top: 50%; left: -10px; transform: translateY(-50%) rotate(-90deg); transform-origin: center; }
+  .rgt { top: 50%; right: -10px; transform: translateY(-50%) rotate(90deg); }
+  .info { font-size: 12px; color: var(--ga-navy-500); line-height: 1.5; }
+  .info b { color: var(--ga-crimson-500); }
+</style></head>
+<body>
+<div class="page">
+  <div class="inner">
+    <div class="lab top">3 cm</div>
+    <div class="lab bot">2 cm</div>
+    <div class="lab lft">3 cm</div>
+    <div class="lab rgt">2 cm</div>
+  </div>
+</div>
+<div class="info">
+  <div style="font-weight:700; color: var(--ga-navy-500); margin-bottom: 6px;">Margens — Documentos Formais</div>
+  <div>Superior <b>3 cm</b> · 1701 DXA</div>
+  <div>Inferior <b>2 cm</b> · 1134 DXA</div>
+  <div>Esquerda <b>3 cm</b> · 1701 DXA</div>
+  <div>Direita <b>2 cm</b> · 1134 DXA</div>
+</div>
+</body></html>

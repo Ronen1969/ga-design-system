@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assinaturas da Equipe · Global Advising</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--ga-navy-50); font-family: Arial, sans-serif; color: var(--ga-black); }
+
+  /* ── SITE HEADER ── */
+  .site-header {
+    background: #fff;
+    border-bottom: 1px solid var(--ga-navy-100);
+    padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; position: sticky; top: 0; z-index: 50;
+  }
+  .site-header img { height: 28px; }
+  .site-header .strap { font-size: 10px; font-weight: 700; color: var(--ga-gray-700); letter-spacing: 0.20em; text-transform: uppercase; }
+
+  /* ── PAGE HERO ── */
+  .hero { background: var(--ga-navy-500); padding: 40px 40px 36px; }
+  .hero-inner { max-width: 1080px; margin: 0 auto; }
+  .hero-tag { font-size: 10px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 10px; }
+  .hero h1 { font-family: Corbel, "Lato", sans-serif; font-size: 36px; font-weight: 700; color: #fff; margin: 0 0 10px; letter-spacing: -0.01em; }
+  .hero-lead { font-size: 14px; color: rgba(255,255,255,0.68); line-height: 1.55; max-width: 560px; margin: 0; }
+
+  /* ── TOOLBAR ── */
+  .bar { max-width: 1080px; margin: 0 auto; padding: 20px 40px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .bar-search {
+    display: flex; align-items: center; gap: 8px; flex: 1; max-width: 360px;
+  }
+  .bar-search input {
+    font-family: Arial, sans-serif; font-size: 13px;
+    padding: 8px 12px; border-radius: 2px;
+    border: 1px solid var(--ga-navy-100); color: var(--ga-black);
+    outline: none; width: 100%;
+  }
+  .bar-search input:focus { border-color: var(--ga-crimson-500); box-shadow: 0 0 0 2px rgba(146,21,58,0.12); }
+  .bar-info { font-size: 12px; color: var(--ga-gray-700); }
+  .bar-info b { color: var(--ga-navy-500); font-weight: 700; }
+  .bulk-row { max-width: 1080px; margin: 0 auto; padding: 12px 40px 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .bulk-label { font-size: 11px; font-weight: 700; color: var(--ga-navy-500); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .bulk-input {
+    font-family: Arial, sans-serif; font-size: 12px;
+    padding: 6px 10px; border-radius: 2px;
+    border: 1px solid var(--ga-navy-100); color: var(--ga-black);
+    outline: none; width: 200px;
+  }
+  .bulk-input:focus { border-color: var(--ga-crimson-500); }
+  .bulk-btn {
+    font-family: Arial, sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.04em; padding: 6px 14px; border-radius: 2px;
+    border: 1px solid var(--ga-navy-100); background: #fff;
+    color: var(--ga-navy-500); cursor: pointer;
+  }
+  .bulk-btn:hover { background: var(--ga-navy-50); }
+  .bulk-note { font-size: 11px; color: var(--ga-gray-700); }
+
+  /* ── GRID ── */
+  .grid { max-width: 1080px; margin: 0 auto; padding: 20px 40px 60px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  /* ── EMPLOYEE CARD ── */
+  .card {
+    background: #fff; border: 1px solid var(--ga-navy-100); border-radius: 6px;
+    overflow: hidden; display: flex; flex-direction: column;
+    transition: box-shadow 200ms;
+  }
+  .card:hover { box-shadow: var(--ga-shadow-soft); }
+  .card-head {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--ga-navy-50);
+    background: var(--ga-navy-500);
+  }
+  .card-name { font-family: Corbel, "Lato", sans-serif; font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 3px; }
+  .card-email { font-family: var(--ga-font-mono); font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; }
+  .card-fields { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .field label {
+    display: flex; flex-direction: column; gap: 3px;
+    font-size: 9px; font-weight: 700; color: var(--ga-crimson-500);
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .field input {
+    font-family: Arial, sans-serif; font-size: 12px;
+    padding: 5px 8px; border-radius: 2px;
+    border: 1px solid var(--ga-navy-100); color: var(--ga-black);
+    outline: none;
+  }
+  .field input:focus { border-color: var(--ga-crimson-500); box-shadow: 0 0 0 2px rgba(146,21,58,0.10); }
+  .field input::placeholder { color: var(--ga-gray-500); }
+
+  .card-foot { padding: 10px 16px 14px; display: flex; gap: 6px; }
+  .btn-copy {
+    flex: 1; font-family: Arial, sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.04em; padding: 8px 10px; border-radius: 2px; border: none;
+    background: var(--ga-crimson-500); color: #fff; cursor: pointer;
+    transition: background 150ms;
+  }
+  .btn-copy:hover { background: var(--ga-crimson-700); }
+  .btn-preview {
+    font-family: Arial, sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.04em; padding: 8px 10px; border-radius: 2px;
+    border: 1px solid var(--ga-navy-100); background: #fff;
+    color: var(--ga-navy-500); cursor: pointer;
+  }
+  .btn-preview:hover { background: var(--ga-navy-50); }
+
+  /* status flash */
+  .card.copied { outline: 2px solid var(--ga-success); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,35,65,0.55); z-index: 200;
+    align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #fff; border-radius: 6px; width: 100%; max-width: 600px;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 16px 48px rgba(0,35,65,0.22);
+    display: flex; flex-direction: column;
+  }
+  .modal-head {
+    padding: 18px 22px 14px; border-bottom: 1px solid var(--ga-navy-100);
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; background: #fff; z-index: 1;
+  }
+  .modal-head-title { font-family: Corbel, "Lato", sans-serif; font-size: 18px; font-weight: 700; color: var(--ga-navy-500); }
+  .modal-close {
+    font-family: Arial, sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; padding: 6px 12px; border-radius: 2px;
+    border: 1px solid var(--ga-navy-100); background: #fff;
+    color: var(--ga-navy-500); cursor: pointer;
+  }
+  .modal-close:hover { background: var(--ga-navy-50); }
+  .modal-preview { padding: 24px 22px; border-bottom: 1px solid var(--ga-navy-100); background: #f6f8fa; }
+  .modal-preview .from { font-size: 12px; color: var(--ga-gray-700); margin-bottom: 8px; }
+  .modal-preview .from b { color: var(--ga-black); }
+  .modal-src-label {
+    padding: 10px 22px 6px;
+    font-size: 10px; font-weight: 700; color: var(--ga-crimson-500);
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .modal-src {
+    font-family: var(--ga-font-mono); font-size: 11px; color: #d8e1ec;
+    background: var(--ga-navy-700); padding: 14px 22px;
+    overflow-x: auto; max-height: 180px; overflow-y: auto;
+    line-height: 1.5; white-space: pre;
+  }
+  .modal-actions { padding: 14px 22px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .modal-actions button {
+    font-family: Arial, sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; padding: 9px 16px; border-radius: 2px;
+    border: none; cursor: pointer; transition: background 150ms;
+  }
+  .modal-btn-pri  { background: var(--ga-crimson-500); color: #fff; }
+  .modal-btn-pri:hover  { background: var(--ga-crimson-700); }
+  .modal-btn-sec  { background: var(--ga-navy-500); color: #fff; }
+  .modal-btn-sec:hover  { background: var(--ga-navy-700); }
+  .modal-btn-ghost { background: transparent; color: var(--ga-navy-500); border: 1px solid var(--ga-navy-100) !important; border: none; }
+  .modal-btn-ghost:hover { background: var(--ga-navy-50); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--ga-navy-500); color: #fff;
+    padding: 10px 18px; border-radius: 2px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+    opacity: 0; transition: opacity 150ms; pointer-events: none; z-index: 300;
+  }
+  .toast.show { opacity: 1; }
+
+  /* hidden */
+  .card.hidden { display: none; }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: repeat(2, 1fr); padding: 16px 20px 40px; }
+    .hero, .bar, .bulk-row { padding-left: 20px; padding-right: 20px; }
+  }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SITE HEADER -->
+<header class="site-header">
+  <img src="../assets/logo-global-advising.png" alt="Global Advising">
+  <span class="strap">More than security</span>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Onboarding · 2026</div>
+    <h1>Assinaturas de E-mail — Equipe GA</h1>
+    <p class="hero-lead">Cada pessoa preenche cargo, departamento e telefone, depois clica em <strong style="color:#fff;">"Copiar assinatura"</strong> e cola nas configurações do seu cliente de e-mail.</p>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="bar">
+  <div class="bar-search">
+    <input type="search" id="search" placeholder="Buscar por nome ou e-mail…" oninput="filterCards()">
+  </div>
+  <div class="bar-info"><b id="visible-count">30</b> colaboradores</div>
+</div>
+
+<!-- BULK ROLE FILL -->
+<div class="bulk-row">
+  <span class="bulk-label">Preencher cargo em massa:</span>
+  <input class="bulk-input" id="bulk-role"  placeholder="ex: Consultor de Segurança">
+  <input class="bulk-input" id="bulk-dept"  placeholder="ex: Operações">
+  <button class="bulk-btn" onclick="applyBulk()">Aplicar aos sem preenchimento</button>
+  <span class="bulk-note">Só preenche campos ainda vazios.</span>
+</div>
+
+<!-- GRID -->
+<div class="grid" id="grid"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modal-name">—</div>
+      <button class="modal-close" onclick="closeModalDirect()">Fechar ✕</button>
+    </div>
+    <div class="modal-preview">
+      <div class="from">De: <b id="modal-from">—</b></div>
+      <div id="modal-render"></div>
+    </div>
+    <div class="modal-src-label">HTML Source</div>
+    <div class="modal-src" id="modal-src"></div>
+    <div class="modal-actions">
+      <button class="modal-btn-pri"   onclick="modalCopyRich()">Copiar assinatura</button>
+      <button class="modal-btn-sec"   onclick="modalCopyHtml()">Copiar HTML</button>
+      <button class="modal-btn-ghost" onclick="modalDownload()">Baixar .html</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── EMPLOYEE DATA ── */
+const EMPLOYEES = [
+  { name: 'Adalberto Pugliesi',              email: 'adalberto@gaadvising.com' },
+  { name: 'Adriano Santos',                  email: 'adriano@gaadvising.com' },
+  { name: 'Alessandro Benedito Vieira da Silva', email: 'alessandro.silva@gaadvising.com' },
+  { name: 'André Bergamini',                 email: 'agb@gaadvising.com' },
+  { name: 'Carlos Vinícius da Silva',        email: 'carlos.silva@gaadvising.com' },
+  { name: 'Cassio Theodoro',                 email: 'cassio@gaadvising.com' },
+  { name: 'Douglas Ribeiro de Faria',        email: 'douglas.faria@gaadvising.com' },
+  { name: 'Edimilson Onofre',                email: 'edimilson@gaadvising.com' },
+  { name: 'Fabio Torres',                    email: 'fabio.torres@gaadvising.com' },
+  { name: 'Fabricio Amar',                   email: 'fabricio@gaadvising.com' },
+  { name: 'Francisco de Assis Pereira',      email: 'assis@gaadvising.com' },
+  { name: 'Gustavo Santana de Camargo',      email: 'gustavo.camargo@gaadvising.com' },
+  { name: 'Helio Onofre',                    email: 'helio@gaadvising.com' },
+  { name: 'Jeffersonn da Silva Cunha',       email: 'jeffersonn.cunha@gaadvising.com' },
+  { name: 'José Francisco Rodrigues Cavalcante', email: 'cavalcante@gaadvising.com' },
+  { name: 'Luann Lucas Lopes',               email: 'luann.lopes@gaadvising.com' },
+  { name: 'Lucas Morais',                    email: 'lucas.morais@gaadvising.com' },
+  { name: 'Matheus Mendes Neves',            email: 'matheus@gaadvising.com' },
+  { name: 'Naoya Ishikawa',                  email: 'naoya@gaadvising.com' },
+  { name: 'Rafael Victor Oliveira Zago',     email: 'rafael.zago@gaadvising.com' },
+  { name: 'Rodolfo Esteves da Silva',        email: 'rodolfo.esteves@gaadvising.com' },
+  { name: 'Rogério Pedra',                   email: 'rogerio@gaadvising.com' },
+  { name: 'Ronen Ben Efraim',               email: 'ronen@gaadvising.com' },
+  { name: 'Roney Valentim',                  email: 'v.roney@gaadvising.com' },
+  { name: 'Uri Sade',                        email: 'urisade@gaadvising.com' },
+  { name: 'Valdemir Garcia de Oliveira',     email: 'valdemir@gaadvising.com' },
+  { name: 'Vitória Borges Souza',            email: 'vitoria@gaadvising.com' },
+  { name: 'Wagner Wesley Melo Ventura',      email: 'wagner@gaadvising.com' },
+  { name: 'Wellington Luiz Freitas Rodrigues', email: 'wellington.rodrigues@gaadvising.com' },
+  { name: 'Yoram Shvartz',                   email: 'yoram@gaadvising.com' },
+];
+
+const LOGO_URL = (location.origin === 'null' || location.protocol === 'file:')
+  ? '../assets/logo-global-advising.png'
+  : new URL('../assets/logo-global-advising.png', location.href).href;
+
+/* ── SIGNATURE BUILDER (email-safe) ── */
+function buildSig(d) {
+  const navy = '#002341', crimson = '#92153A', black = '#1A1A1A', gray = '#4A4B4D', div = '#BFC8CF';
+  const phone = d.phone ? `<span style="color:${gray};">T</span>&nbsp;${d.phone}<br>` : '';
+  const dept  = d.dept  ? `<div style="font-size:11px;color:${gray};margin-top:2px;">${d.dept}</div>` : '';
+  return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;color:${black};">
+  <tr>
+    <td style="padding:0 18px 0 0;border-right:2px solid ${crimson};vertical-align:top;">
+      <img src="${LOGO_URL}" width="120" alt="Global Advising" style="display:block;border:0;">
+    </td>
+    <td style="padding:0 0 0 18px;vertical-align:top;">
+      <div style="font-size:14px;font-weight:700;color:${navy};letter-spacing:0.02em;">${d.name}</div>
+      <div style="font-size:12px;color:${black};margin-top:2px;">${d.role || '&nbsp;'}</div>
+      ${dept}
+      <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:10px 0 6px;">More than security</div>
+      <div style="font-size:11px;color:${black};line-height:1.55;">
+        ${phone}<span style="color:${gray};">E</span>&nbsp;<a href="mailto:${d.email}" style="color:${crimson};text-decoration:none;font-weight:700;">${d.email}</a><br>
+        <span style="color:${gray};">W</span>&nbsp;<a href="https://www.gaadvising.com" style="color:${navy};text-decoration:none;font-weight:700;">www.gaadvising.com</a>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="padding-top:12px;border-top:1px solid ${div};font-size:9px;color:${gray};letter-spacing:0.04em;line-height:1.5;">
+      Esta mensagem é confidencial e destinada exclusivamente ao(s) destinatário(s). Em caso de recebimento indevido, favor notificar o remetente e excluir.
+    </td>
+  </tr>
+</table>`;
+}
+
+/* ── RENDER GRID ── */
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  EMPLOYEES.forEach((emp, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.idx = i;
+    card.dataset.name = emp.name.toLowerCase();
+    card.dataset.email = emp.email.toLowerCase();
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="card-name">${emp.name}</div>
+        <div class="card-email">${emp.email}</div>
+      </div>
+      <div class="card-fields">
+        <div class="field"><label>Cargo<input data-field="role" placeholder="ex: Consultor Sênior" oninput="onFieldInput(this)"></label></div>
+        <div class="field"><label>Departamento<input data-field="dept" placeholder="ex: Inteligência &amp; Riscos" oninput="onFieldInput(this)"></label></div>
+        <div class="field"><label>Telefone<input data-field="phone" placeholder="ex: +55 11 9 0000-0000" oninput="onFieldInput(this)"></label></div>
+      </div>
+      <div class="card-foot">
+        <button class="btn-copy"    onclick="copyCard(${i})">Copiar assinatura</button>
+        <button class="btn-preview" onclick="openModal(${i})">Ver</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ── FIELD INPUT ── */
+function onFieldInput(input) { /* live — nothing extra needed */ }
+
+function getCardData(i) {
+  const card = document.querySelector(`.card[data-idx="${i}"]`);
+  const emp  = EMPLOYEES[i];
+  return {
+    name:  emp.name,
+    email: emp.email,
+    role:  card.querySelector('[data-field="role"]').value.trim(),
+    dept:  card.querySelector('[data-field="dept"]').value.trim(),
+    phone: card.querySelector('[data-field="phone"]').value.trim(),
+  };
+}
+
+/* ── COPY ── */
+async function copyCard(i) {
+  const d    = getCardData(i);
+  const html = buildSig(d);
+  const card = document.querySelector(`.card[data-idx="${i}"]`);
+  try {
+    if (window.ClipboardItem) {
+      const blob = new Blob([html], { type: 'text/html' });
+      const txt  = new Blob([d.name + '\n' + d.role + '\n' + d.email + '\nwww.gaadvising.com'], { type: 'text/plain' });
+      await navigator.clipboard.write([new ClipboardItem({ 'text/html': blob, 'text/plain': txt })]);
+    } else {
+      await navigator.clipboard.writeText(html);
+    }
+    card.classList.add('copied');
+    setTimeout(() => card.classList.remove('copied'), 2000);
+    toast(`✓ Assinatura de ${d.name.split(' ')[0]} copiada`);
+  } catch { toast('Falha ao copiar — use o botão "Ver" e copie manualmente'); }
+}
+
+/* ── MODAL ── */
+let modalIdx = -1;
+
+function openModal(i) {
+  modalIdx = i;
+  refreshModal();
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function refreshModal() {
+  if (modalIdx < 0) return;
+  const d   = getCardData(modalIdx);
+  const html = buildSig(d);
+  document.getElementById('modal-name').textContent = d.name;
+  document.getElementById('modal-from').textContent = d.name + ' <' + d.email + '>';
+  document.getElementById('modal-render').innerHTML = html;
+  document.getElementById('modal-src').textContent  = html;
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+  modalIdx = -1;
+}
+
+async function modalCopyRich() {
+  const html = document.getElementById('modal-src').textContent;
+  try {
+    if (window.ClipboardItem) {
+      const blob = new Blob([html], { type: 'text/html' });
+      const txt  = new Blob([document.getElementById('modal-render').innerText], { type: 'text/plain' });
+      await navigator.clipboard.write([new ClipboardItem({ 'text/html': blob, 'text/plain': txt })]);
+    } else { await navigator.clipboard.writeText(html); }
+    toast('Assinatura copiada — cole no cliente de e-mail');
+  } catch { toast('Falha ao copiar'); }
+}
+
+async function modalCopyHtml() {
+  try { await navigator.clipboard.writeText(document.getElementById('modal-src').textContent); toast('HTML copiado'); }
+  catch { toast('Falha ao copiar'); }
+}
+
+function modalDownload() {
+  const d    = getCardData(modalIdx);
+  const html = '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>' + buildSig(d) + '</body></html>';
+  const blob = new Blob([html], { type: 'text/html' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = d.email.split('@')[0] + '-signature.html';
+  a.click();
+  toast('Arquivo baixado');
+}
+
+/* ── SEARCH ── */
+function filterCards() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  let visible = 0;
+  document.querySelectorAll('.card').forEach(card => {
+    const match = !q || card.dataset.name.includes(q) || card.dataset.email.includes(q);
+    card.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+  document.getElementById('visible-count').textContent = visible;
+}
+
+/* ── BULK FILL ── */
+function applyBulk() {
+  const role  = document.getElementById('bulk-role').value.trim();
+  const dept  = document.getElementById('bulk-dept').value.trim();
+  let filled = 0;
+  document.querySelectorAll('.card').forEach(card => {
+    const ri = card.querySelector('[data-field="role"]');
+    const di = card.querySelector('[data-field="dept"]');
+    if (role && !ri.value.trim()) { ri.value = role; filled++; }
+    if (dept && !di.value.trim()) { di.value = dept; }
+  });
+  toast(`Cargo/depto aplicado a ${filled} campos vazios`);
+}
+
+/* ── TOAST ── */
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+/* ── INIT ── */
+renderGrid();
+</script>
+
+</body>
+</html>

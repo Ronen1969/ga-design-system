@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Iconography</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 18px 24px; background: #fff; font-family: Arial, sans-serif; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 652px; }
+  .cell { border: 1px solid var(--ga-navy-100); border-radius: 4px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .glyph { font-size: 28px; line-height: 1; margin-bottom: 6px; }
+  .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .info { color: var(--ga-navy-500); }
+  .ok { color: var(--ga-success); }
+  .warn { color: var(--ga-warning); }
+  .risk { color: var(--ga-crimson-500); }
+  .note { font-size: 10px; color: var(--ga-gray-700); margin-top: 12px; line-height: 1.5; }
+</style></head>
+<body>
+<div class="grid">
+  <div class="cell"><div class="glyph info">ℹ</div><div class="lbl info">Info</div></div>
+  <div class="cell"><div class="glyph ok">✓</div><div class="lbl ok">Achado</div></div>
+  <div class="cell"><div class="glyph warn">⚠</div><div class="lbl warn">Alerta</div></div>
+  <div class="cell"><div class="glyph risk">✗</div><div class="lbl risk">Risco</div></div>
+</div>
+<div class="note">Unicode glyphs only — chosen to render natively in Word, Outlook, and HTML. No emoji, no icon font in formal docs. Lucide is the recommended substitute for digital surfaces (flagged).</div>
+</body></html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como Usar · Sistema de Marca · Global Advising 2026</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  /* ── PRINT SETUP ── */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ga-navy-50);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    color: var(--ga-black);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── SCREEN TOOLBAR ── */
+  .toolbar {
+    max-width: 21cm;
+    margin: 24px auto 12px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    padding: 0 8px;
+  }
+  .toolbar button {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 8px 16px;
+    border-radius: 2px;
+    border: 1px solid var(--ga-navy-100);
+    background: #fff;
+    color: var(--ga-navy-500);
+    cursor: pointer;
+  }
+  .toolbar .pri {
+    background: var(--ga-crimson-500);
+    color: #fff;
+    border-color: var(--ga-crimson-500);
+  }
+  .toolbar .pri:hover { background: var(--ga-crimson-700); }
+
+  /* ── PAGE SHELL ── */
+  .page {
+    width: 21cm;
+    min-height: 29.7cm;
+    background: #fff;
+    margin: 0 auto 24px;
+    box-shadow: 0 4px 24px rgba(0,35,65,0.12);
+    padding: 1.8cm 2cm 1.8cm 3cm;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* ── HEADER ── */
+  .ga-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10pt;
+    margin-bottom: 0;
+  }
+  .ga-header .wordmark { height: 34px; width: auto; }
+  .ga-header .mark     { height: 40px; width: auto; }
+  .header-rule {
+    height: 2px;
+    background: var(--ga-crimson-500);
+    margin-bottom: 22pt;
+  }
+
+  /* ── PAGE TITLE ── */
+  .page-eyebrow {
+    font-size: 8pt;
+    font-weight: 700;
+    color: var(--ga-crimson-500);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6pt;
+  }
+  .page-title {
+    font-size: 20pt;
+    font-weight: 700;
+    color: var(--ga-navy-500);
+    margin: 0 0 4pt 0;
+    line-height: 1.1;
+    letter-spacing: -0.005em;
+  }
+  .page-lead {
+    font-size: 9.5pt;
+    color: var(--ga-gray-700);
+    line-height: 1.5;
+    margin: 0 0 20pt 0;
+    max-width: 13cm;
+  }
+
+  /* ── SECTION RULE ── */
+  .section-rule {
+    border: none;
+    border-top: 1px solid var(--ga-navy-100);
+    margin: 16pt 0 14pt 0;
+  }
+
+  /* ── THREE COLUMNS ── */
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16pt;
+    margin-bottom: 14pt;
+  }
+  .col-block { display: flex; flex-direction: column; }
+
+  .col-num {
+    font-family: var(--ga-font-mono);
+    font-size: 22pt;
+    font-weight: 700;
+    color: var(--ga-crimson-500);
+    line-height: 1;
+    margin-bottom: 6pt;
+    letter-spacing: -0.02em;
+  }
+  .col-cap {
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: var(--ga-crimson-500);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 2pt;
+  }
+  .col-title {
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--ga-navy-500);
+    margin: 0 0 10pt 0;
+    line-height: 1.2;
+  }
+
+  /* Steps */
+  .steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+  .steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 14pt 1fr;
+    gap: 5pt;
+    margin-bottom: 7pt;
+    font-size: 9pt;
+    line-height: 1.45;
+    color: var(--ga-black);
+    align-items: start;
+  }
+  .steps li::before {
+    content: counter(step);
+    font-family: var(--ga-font-mono);
+    font-size: 8pt;
+    font-weight: 700;
+    color: var(--ga-crimson-500);
+    padding-top: 1pt;
+    letter-spacing: 0.04em;
+  }
+  .steps li strong { font-weight: 700; color: var(--ga-navy-500); }
+  .steps li .url {
+    display: inline-block;
+    font-family: var(--ga-font-mono);
+    font-size: 7.5pt;
+    color: var(--ga-crimson-500);
+    background: var(--ga-crimson-100);
+    padding: 1pt 4pt;
+    border-radius: 2px;
+    word-break: break-all;
+    margin-top: 2pt;
+  }
+  .steps li .kbd {
+    display: inline-block;
+    font-family: var(--ga-font-mono);
+    font-size: 7.5pt;
+    color: var(--ga-navy-500);
+    background: var(--ga-navy-50);
+    border: 1px solid var(--ga-navy-100);
+    padding: 0pt 4pt;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Col dividers */
+  .col-block + .col-block {
+    border-left: 1px solid var(--ga-navy-100);
+    padding-left: 16pt;
+  }
+
+  /* ── BRAND RULES STRIP ── */
+  .brand-strip {
+    background: var(--ga-navy-50);
+    border: 1px solid var(--ga-navy-100);
+    border-radius: 4px;
+    padding: 10pt 12pt;
+    margin-bottom: 14pt;
+  }
+  .brand-strip .strip-cap {
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: var(--ga-navy-500);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8pt;
+  }
+  .brand-rules {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8pt 12pt;
+  }
+  .brand-rule { font-size: 8.5pt; line-height: 1.4; color: var(--ga-black); }
+  .brand-rule .r-label {
+    font-size: 7pt;
+    font-weight: 700;
+    color: var(--ga-crimson-500);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2pt;
+  }
+
+  /* Color swatches inline */
+  .swatch {
+    display: inline-block;
+    width: 8pt;
+    height: 8pt;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 3pt;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  /* ── FOOTER ── */
+  .ga-footer {
+    margin-top: auto;
+    border-top: 2px solid var(--ga-navy-500);
+    padding-top: 6pt;
+    font-size: 7.5pt;
+    color: var(--ga-gray-700);
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12pt;
+  }
+  .ga-footer .brand-line {
+    font-weight: 700;
+    color: var(--ga-navy-500);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 7pt;
+    margin-bottom: 2pt;
+  }
+  .ga-footer .brand-line .strap { color: var(--ga-crimson-500); }
+  .ga-footer .url-block {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .ga-footer .url-block .url-label {
+    font-size: 7pt;
+    font-weight: 700;
+    color: var(--ga-crimson-500);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2pt;
+  }
+  .ga-footer .url-value {
+    font-family: var(--ga-font-mono);
+    font-size: 8pt;
+    color: var(--ga-navy-500);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── PRINT OVERRIDES ── */
+  @media print {
+    html, body { background: #fff; }
+    .toolbar { display: none; }
+    .page { box-shadow: none; margin: 0; min-height: 29.7cm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="window.print()">Imprimir</button>
+  <button class="pri" onclick="window.print()">Salvar como PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="ga-header">
+    <img class="wordmark" src="../assets/logo-global-advising.png" alt="Global Advising">
+    <img class="mark"     src="../assets/logo-ga-mark.png"         alt="GA">
+  </div>
+  <div class="header-rule"></div>
+
+  <!-- TITLE -->
+  <div class="page-eyebrow">Guia Rápido · Atualização 2026</div>
+  <h1 class="page-title">Como usar o Sistema de Marca</h1>
+  <p class="page-lead">Três recursos disponíveis para toda a equipe. Siga os passos abaixo para configurar sua assinatura, emitir relatórios e preparar apresentações dentro do padrão Global Advising.</p>
+
+  <!-- THREE COLUMNS -->
+  <div class="three-col">
+
+    <!-- 01 ASSINATURA -->
+    <div class="col-block">
+      <div class="col-num">01</div>
+      <div class="col-cap">Prioridade imediata</div>
+      <h2 class="col-title">Assinatura<br>de E-mail</h2>
+      <ol class="steps">
+        <li>
+          <div>Acesse o gerador:<br>
+            <span class="url">_URL_/deliverables/<br>mail-signature.html</span>
+          </div>
+        </li>
+        <li>
+          <div>Preencha <strong>nome completo, cargo, departamento, telefone e e-mail</strong>.</div>
+        </li>
+        <li>
+          <div>Clique em <strong>"Copiar como texto formatado"</strong>.</div>
+        </li>
+        <li>
+          <div>Abra as <strong>configurações de assinatura</strong> do seu cliente de e-mail.</div>
+        </li>
+        <li>
+          <div>Cole com <span class="kbd">Ctrl+V</span> e salve. Pronto.</div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- 02 TIMBRADO -->
+    <div class="col-block">
+      <div class="col-num">02</div>
+      <div class="col-cap">Relatórios a clientes</div>
+      <h2 class="col-title">Letterhead<br>para Relatórios</h2>
+      <ol class="steps">
+        <li>
+          <div>Acesse o template:<br>
+            <span class="url">_URL_/deliverables/<br>timbrado-word.html</span>
+          </div>
+        </li>
+        <li>
+          <div>Substitua os <strong>dados de exemplo</strong> (cliente, data, referência GA-XXXX).</div>
+        </li>
+        <li>
+          <div>Edite os títulos, texto e tabelas mantendo a estrutura existente.</div>
+        </li>
+        <li>
+          <div>Pressione <span class="kbd">Ctrl+P</span> → selecione <strong>"Salvar como PDF"</strong>.</div>
+        </li>
+        <li>
+          <div>Anexe o PDF ao e-mail para o cliente.</div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- 03 APRESENTAÇÃO -->
+    <div class="col-block">
+      <div class="col-num">03</div>
+      <div class="col-cap">Decks e apresentações</div>
+      <h2 class="col-title">Template de<br>Apresentação</h2>
+      <ol class="steps">
+        <li>
+          <div>Acesse os slides:<br>
+            <span class="url">_URL_/deliverables/<br>timbrado-powerpoint.html</span>
+          </div>
+        </li>
+        <li>
+          <div>Navegue entre os <strong>6 layouts</strong> com <span class="kbd">←</span> <span class="kbd">→</span> ou os botões.</div>
+        </li>
+        <li>
+          <div>Edite títulos, textos e dados diretamente no HTML — ou solicite ao time de design.</div>
+        </li>
+        <li>
+          <div>Para exportar: <span class="kbd">Ctrl+P</span> → <strong>"Salvar como PDF"</strong> (modo paisagem).</div>
+        </li>
+      </ol>
+    </div>
+
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- BRAND RULES STRIP -->
+  <div class="brand-strip">
+    <div class="strip-cap">Regras de Marca — Referência Rápida</div>
+    <div class="brand-rules">
+      <div class="brand-rule">
+        <span class="r-label">Cores</span>
+        <span class="swatch" style="background:#92153A;"></span><strong>Crimson</strong> — títulos H2, ênfase<br>
+        <span class="swatch" style="background:#002341;"></span><strong>Navy</strong> — títulos H1, fundo<br>
+        <span class="swatch" style="background:#1A1A1A;"></span><strong>Preto</strong> — corpo de texto
+      </div>
+      <div class="brand-rule">
+        <span class="r-label">Tipografia</span>
+        <strong>Arial</strong> — documentos formais (relatórios, PDF)<br>
+        <strong>Corbel</strong> — comunicação, decks, assinatura<br>
+        Nunca sublinhar. Negrito permitido.
+      </div>
+      <div class="brand-rule">
+        <span class="r-label">Tom de Voz</span>
+        Técnico, direto, consultivo.<br>
+        Evitar alarmismo, promessas vagas e jargão sem contexto.<br>
+        Frase ativa, sentença curta.
+      </div>
+      <div class="brand-rule">
+        <span class="r-label">Ícones &amp; Símbolos</span>
+        Apenas os 4 glifos oficiais:<br>
+        <strong>ℹ</strong> informação &nbsp; <strong>✓</strong> aprovado<br>
+        <strong>⚠</strong> atenção &nbsp;&nbsp;&nbsp; <strong>✗</strong> risco crítico<br>
+        Sem emoji em documentos formais.
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="ga-footer">
+    <div>
+      <div class="brand-line">Global Advising · <span class="strap">More Than Security</span></div>
+      <div>Av. Francisco Matarazzo, 1752 · Cj. 808/809 · Água Branca · São Paulo / SP</div>
+      <div><b style="color:var(--ga-navy-500)">T</b> (11) 3079-4752 &nbsp;·&nbsp; <b style="color:var(--ga-navy-500)">E</b> contato@gaadvising.com &nbsp;·&nbsp; <b style="color:var(--ga-navy-500)">W</b> www.gaadvising.com</div>
+    </div>
+    <div class="url-block">
+      <span class="url-label">Sistema de Marca Online</span>
+      <span class="url-value">_URL_/index.html</span>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+</body>
+</html>

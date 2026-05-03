@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-mail de Rollout · Global Advising</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ga-navy-50);
+    font-family: Arial, sans-serif;
+    color: var(--ga-black);
+    padding: 40px 24px;
+  }
+
+  /* ── OUTER WRAP ── */
+  .outer { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    background: #fff;
+    border: 1px solid var(--ga-navy-100);
+    border-radius: 6px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .toolbar-fields { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .toolbar-fields label {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ga-navy-500);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    gap: 10px;
+  }
+  .toolbar-fields input {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 2px;
+    border: 1px solid var(--ga-navy-100);
+    color: var(--ga-black);
+    outline: none;
+    width: 100%;
+  }
+  .toolbar-fields input:focus {
+    border-color: var(--ga-crimson-500);
+    box-shadow: 0 0 0 2px rgba(146,21,58,0.12);
+  }
+  .toolbar-actions { display: flex; flex-direction: column; gap: 8px; min-width: 160px; align-items: stretch; }
+  .toolbar-actions button {
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: background 150ms;
+  }
+  .btn-pri  { background: var(--ga-crimson-500); color: #fff; }
+  .btn-pri:hover { background: var(--ga-crimson-700); }
+  .btn-sec  { background: var(--ga-navy-500); color: #fff; }
+  .btn-sec:hover { background: var(--ga-navy-700); }
+  .btn-ghost { background: transparent; color: var(--ga-navy-500); border: 1px solid var(--ga-navy-100) !important; border: none; }
+  .btn-ghost:hover { background: var(--ga-navy-50); }
+
+  /* ── SUBJECT LINE DISPLAY ── */
+  .subject-line {
+    background: #fff;
+    border: 1px solid var(--ga-navy-100);
+    border-radius: 6px;
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .subject-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ga-crimson-500);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .subject-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ga-navy-500);
+    flex: 1;
+  }
+  .subject-copy {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 2px;
+    border: 1px solid var(--ga-navy-100);
+    background: #fff;
+    color: var(--ga-navy-500);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .subject-copy:hover { background: var(--ga-navy-50); }
+
+  /* ── EMAIL PREVIEW FRAME ── */
+  .email-frame {
+    background: #fff;
+    border: 1px solid var(--ga-navy-100);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .email-chrome {
+    background: #f6f8fa;
+    border-bottom: 1px solid var(--ga-navy-100);
+    padding: 12px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .email-chrome .row {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--ga-gray-700);
+  }
+  .email-chrome .row .lbl {
+    font-weight: 700;
+    color: var(--ga-navy-500);
+    width: 50px;
+    flex-shrink: 0;
+    font-size: 11px;
+  }
+
+  /* ── THE ACTUAL EMAIL HTML ── */
+  #email-body { padding: 32px; }
+
+  /* ── SOURCE PANEL ── */
+  .source-panel {
+    background: var(--ga-navy-700);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .source-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .source-header span {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ga-crimson-500);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .source-header button {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+  }
+  .source-header button:hover { background: rgba(255,255,255,0.08); }
+  .source-out {
+    font-family: var(--ga-font-mono);
+    font-size: 11px;
+    color: #d8e1ec;
+    padding: 16px;
+    overflow-x: auto;
+    max-height: 200px;
+    overflow-y: auto;
+    line-height: 1.55;
+    white-space: pre;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ga-navy-500);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    opacity: 0;
+    transition: opacity 150ms;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="outer">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-fields">
+      <label>URL do sistema
+        <input id="f-url" value="https://gaadvising.github.io/design-system" placeholder="https://gaadvising.github.io/design-system">
+      </label>
+      <label>Seu nome
+        <input id="f-sender" value="Nome do Remetente">
+      </label>
+      <label>Seu cargo
+        <input id="f-role" value="Diretora de Operações">
+      </label>
+      <label>Data limite
+        <input id="f-deadline" value="sexta-feira, 09/05">
+      </label>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn-pri" onclick="copyRich()">Copiar e-mail</button>
+      <button class="btn-sec" onclick="copyHtml()">Copiar HTML</button>
+      <button class="btn-ghost" onclick="copySubject()">Copiar assunto</button>
+    </div>
+  </div>
+
+  <!-- SUBJECT LINE -->
+  <div class="subject-line">
+    <span class="subject-label">Assunto</span>
+    <span class="subject-value" id="subject-display">Ação necessária: configure sua assinatura de e-mail até sexta-feira, 09/05</span>
+    <button class="subject-copy" onclick="copySubject()">Copiar</button>
+  </div>
+
+  <!-- EMAIL PREVIEW -->
+  <div class="email-frame">
+    <div class="email-chrome">
+      <div class="row"><span class="lbl">De:</span><span id="c-from">Nome do Remetente &lt;contato@gaadvising.com&gt;</span></div>
+      <div class="row"><span class="lbl">Para:</span><span>equipe@gaadvising.com</span></div>
+      <div class="row"><span class="lbl">Assunto:</span><span id="c-subject">Ação necessária: configure sua assinatura de e-mail até sexta-feira, 09/05</span></div>
+    </div>
+    <div id="email-body"></div>
+  </div>
+
+  <!-- HTML SOURCE -->
+  <div class="source-panel">
+    <div class="source-header">
+      <span>HTML Source</span>
+      <button onclick="copyHtml()">Copiar</button>
+    </div>
+    <div class="source-out" id="source-out"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const navy    = '#002341';
+const crimson = '#92153A';
+const black   = '#1A1A1A';
+const gray    = '#4A4B4D';
+const divider = '#BFC8CF';
+const bg      = '#EAEDEF';
+
+function buildEmail(url, sender, role, deadline) {
+  const sigUrl  = url + '/deliverables/mail-signature.html';
+  const wordUrl = url + '/deliverables/timbrado-word.html';
+  const pptUrl  = url + '/deliverables/timbrado-powerpoint.html';
+  const guideUrl= url + '/deliverables/como-usar.html';
+
+  return `<table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,Helvetica,sans-serif;color:${black};font-size:14px;line-height:1.6;">
+
+  <!-- HEADER BAND -->
+  <tr>
+    <td style="padding:0 0 20px 0;border-bottom:2px solid ${crimson};">
+      <img src="${url}/assets/logo-global-advising.png" width="160" height="" alt="Global Advising" style="display:block;border:0;">
+    </td>
+  </tr>
+
+  <!-- BODY -->
+  <tr>
+    <td style="padding:24px 0 0 0;">
+
+      <p style="margin:0 0 16px 0;">Equipe,</p>
+
+      <p style="margin:0 0 16px 0;">O <strong style="color:${navy};">sistema de marca 2026</strong> está disponível. Há três ações — a primeira é obrigatória até <strong style="color:${crimson};">${deadline}</strong>.</p>
+
+      <!-- ACTION 1 — SIGNATURE (URGENT) -->
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 12px 0;">
+        <tr>
+          <td style="background:#F4E7EB;border-left:4px solid ${crimson};border-radius:0 4px 4px 0;padding:14px 18px;">
+            <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;">01 · Obrigatório até ${deadline}</div>
+            <div style="font-size:15px;font-weight:700;color:${navy};margin-bottom:8px;">Configure sua assinatura de e-mail</div>
+            <div style="font-size:13px;color:${black};margin-bottom:12px;">
+              Acesse o gerador, preencha seus dados e cole no Outlook ou Gmail. Leva menos de 3 minutos.
+            </div>
+            <a href="${sigUrl}" style="display:inline-block;background:${crimson};color:#fff;font-weight:700;font-size:12px;letter-spacing:0.06em;text-decoration:none;padding:9px 18px;border-radius:2px;">Gerar minha assinatura →</a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- ACTION 2 — WORD -->
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 12px 0;">
+        <tr>
+          <td style="background:#EAEDEF;border-left:4px solid ${navy};border-radius:0 4px 4px 0;padding:14px 18px;">
+            <div style="font-size:10px;font-weight:700;color:${navy};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;">02 · A partir de agora</div>
+            <div style="font-size:15px;font-weight:700;color:${navy};margin-bottom:8px;">Use o timbrado em todos os relatórios a clientes</div>
+            <div style="font-size:13px;color:${black};margin-bottom:12px;">
+              Abra o template, substitua os dados de exemplo, imprima como PDF.
+            </div>
+            <a href="${wordUrl}" style="display:inline-block;background:${navy};color:#fff;font-weight:700;font-size:12px;letter-spacing:0.06em;text-decoration:none;padding:9px 18px;border-radius:2px;">Abrir timbrado →</a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- ACTION 3 — PPT -->
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 24px 0;">
+        <tr>
+          <td style="background:#EAEDEF;border-left:4px solid ${navy};border-radius:0 4px 4px 0;padding:14px 18px;">
+            <div style="font-size:10px;font-weight:700;color:${navy};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;">03 · A partir de agora</div>
+            <div style="font-size:15px;font-weight:700;color:${navy};margin-bottom:8px;">Use o template nas apresentações a clientes</div>
+            <div style="font-size:13px;color:${black};margin-bottom:12px;">
+              Seis layouts prontos. Navegue com ← →, edite o conteúdo, exporte como PDF.
+            </div>
+            <a href="${pptUrl}" style="display:inline-block;background:${navy};color:#fff;font-weight:700;font-size:12px;letter-spacing:0.06em;text-decoration:none;padding:9px 18px;border-radius:2px;">Abrir apresentação →</a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- GUIDE LINK -->
+      <p style="margin:0 0 24px 0;font-size:13px;color:${gray};">
+        Não sabe por onde começar? <a href="${guideUrl}" style="color:${crimson};font-weight:700;text-decoration:none;">Abra o guia de uma página</a> — tem todos os passos, imprimível.
+      </p>
+
+      <p style="margin:0 0 6px 0;font-size:13px;color:${black};">Dúvidas? Responda este e-mail.</p>
+      <p style="margin:0 0 32px 0;font-size:13px;color:${black};">Atenciosamente,</p>
+
+    </td>
+  </tr>
+
+  <!-- SENDER SIGNATURE -->
+  <tr>
+    <td style="border-top:1px solid ${divider};padding-top:20px;">
+      <div style="font-size:14px;font-weight:700;color:${navy};">${sender}</div>
+      <div style="font-size:12px;color:${black};margin-top:2px;">${role}</div>
+      <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:8px 0 4px;">More than security</div>
+      <div style="font-size:11px;color:${black};line-height:1.6;">
+        <span style="color:${gray};">E</span>&nbsp;contato@gaadvising.com&nbsp;&nbsp;
+        <span style="color:${gray};">W</span>&nbsp;www.gaadvising.com
+      </div>
+    </td>
+  </tr>
+
+</table>`;
+}
+
+function getData() {
+  return {
+    url:      (document.getElementById('f-url').value || '').replace(/\/$/, ''),
+    sender:   document.getElementById('f-sender').value || 'Remetente',
+    role:     document.getElementById('f-role').value || '',
+    deadline: document.getElementById('f-deadline').value || 'esta semana',
+  };
+}
+
+function getSubject() {
+  const d = getData();
+  return `Ação necessária: configure sua assinatura de e-mail até ${d.deadline}`;
+}
+
+function render() {
+  const d = getData();
+  const html = buildEmail(d.url, d.sender, d.role, d.deadline);
+  document.getElementById('email-body').innerHTML = html;
+  document.getElementById('source-out').textContent = html;
+  const subj = getSubject();
+  document.getElementById('subject-display').textContent = subj;
+  document.getElementById('c-subject').textContent = subj;
+  document.getElementById('c-from').textContent = d.sender + ' <contato@gaadvising.com>';
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+async function copySubject() {
+  try {
+    await navigator.clipboard.writeText(getSubject());
+    toast('Assunto copiado');
+  } catch { toast('Falha ao copiar'); }
+}
+
+async function copyHtml() {
+  const html = document.getElementById('source-out').textContent;
+  try {
+    await navigator.clipboard.writeText(html);
+    toast('HTML copiado');
+  } catch { toast('Falha ao copiar'); }
+}
+
+async function copyRich() {
+  const html = document.getElementById('source-out').textContent;
+  try {
+    if (window.ClipboardItem) {
+      const blob = new Blob([html], { type: 'text/html' });
+      const txt  = new Blob([document.getElementById('email-body').innerText], { type: 'text/plain' });
+      await navigator.clipboard.write([new ClipboardItem({ 'text/html': blob, 'text/plain': txt })]);
+      toast('E-mail copiado — cole no Outlook ou Gmail');
+    } else {
+      const range = document.createRange();
+      range.selectNode(document.getElementById('email-body'));
+      const sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(range);
+      document.execCommand('copy');
+      sel.removeAllRanges();
+      toast('E-mail copiado');
+    }
+  } catch { toast('Falha ao copiar'); }
+}
+
+document.querySelectorAll('input').forEach(el => el.addEventListener('input', render));
+render();
+</script>
+
+</body>
+</html>

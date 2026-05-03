@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Logo</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; font-family: var(--ga-font-formal); background: #fff; }
+  .card { width: 700px; height: 200px; display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+  .light { background: #fff; display: flex; justify-content: center; align-items: center; border-right: 1px solid var(--ga-navy-100); }
+  .dark { background: var(--ga-navy-500); display: flex; justify-content: center; align-items: center; }
+  .light img, .dark img { width: 280px; height: auto; }
+  .dark img { filter: brightness(0) invert(1); }
+</style></head>
+<body><div class="card">
+  <div class="light"><img src="../assets/logo-global-advising.png" alt="GA logo"></div>
+  <div class="dark"><img src="../assets/logo-global-advising.png" alt="GA logo on dark"></div>
+</div></body></html>

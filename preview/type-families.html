@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Type Families</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap">
+<style>
+  body { margin: 0; padding: 20px 24px; background: #fff; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 652px; }
+  .fam { border-left: 4px solid var(--ga-navy-500); padding-left: 14px; }
+  .fam.comms { border-left-color: var(--ga-crimson-500); }
+  .name { font-family: var(--ga-font-mono); font-size: 10px; color: var(--ga-gray-700); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .label { font-size: 11px; color: var(--ga-gray-700); margin-bottom: 8px; }
+  .specA { font-family: Arial, sans-serif; font-size: 32px; font-weight: 700; color: var(--ga-navy-500); line-height: 1; margin-bottom: 4px; }
+  .specC { font-family: Corbel, "Lato", sans-serif; font-size: 32px; font-weight: 700; color: var(--ga-crimson-500); line-height: 1; margin-bottom: 4px; }
+  .body { font-size: 12px; color: var(--ga-black); line-height: 1.4; }
+  .body.A { font-family: Arial, sans-serif; }
+  .body.C { font-family: Corbel, "Lato", sans-serif; }
+</style></head>
+<body><div class="grid">
+  <div class="fam">
+    <div class="name">Formal · Documents</div>
+    <div class="specA">Arial</div>
+    <div class="label">14 / 12 / 10 / 8 pt · Regular · Bold</div>
+    <div class="body A">Used in Word, PDF, all formal reports. System-installed, prints identically across machines.</div>
+  </div>
+  <div class="fam comms">
+    <div class="name">Comms · Marketing</div>
+    <div class="specC">Corbel</div>
+    <div class="label">Web fallback: Lato (Google Fonts)</div>
+    <div class="body C">Used in decks, presentations, mail signature. Warmer, slightly more humanist than Arial.</div>
+  </div>
+</div></body></html>
