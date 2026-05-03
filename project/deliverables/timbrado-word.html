@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Timbrado · Global Advising — Word</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  :root { --page-w: 21cm; --page-h: 29.7cm; }
+  * { box-sizing: border-box; }
+  html, body { background: var(--ga-navy-50); margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; color: var(--ga-black); padding: 24px 0; }
+
+  .toolbar { max-width: var(--page-w); margin: 0 auto 16px; display: flex; gap: 8px; justify-content: flex-end; padding: 0 8px; }
+  .toolbar button { font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 8px 14px; border-radius: 2px; border: 1px solid var(--ga-navy-100); background: #fff; color: var(--ga-navy-500); cursor: pointer; }
+  .toolbar .pri { background: var(--ga-crimson-500); color: #fff; border-color: var(--ga-crimson-500); }
+  .toolbar .pri:hover { background: var(--ga-crimson-700); }
+
+  .page {
+    width: var(--page-w);
+    min-height: var(--page-h);
+    background: #fff;
+    margin: 0 auto 16px;
+    box-shadow: 0 4px 20px rgba(0,35,65,0.10);
+    padding: 2.4cm 2cm 2.6cm 3cm;
+    position: relative;
+  }
+  .page + .page { page-break-before: always; }
+
+  /* HEADER — wordmark left, GA mark right (matches real timbrado) */
+  .ga-header {
+    position: absolute;
+    top: 1cm; left: 3cm; right: 2cm;
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 8pt;
+  }
+  .ga-header .wordmark { height: 38px; width: auto; }
+  .ga-header .mark { height: 44px; width: auto; }
+  .ga-header-rule {
+    position: absolute;
+    top: calc(1cm + 50px);
+    left: 3cm; right: 2cm;
+    height: 2px; background: var(--ga-crimson-500);
+  }
+
+  /* FOOTER — full company contact block */
+  .ga-footer {
+    position: absolute;
+    bottom: 1cm; left: 3cm; right: 2cm;
+    border-top: 2px solid var(--ga-navy-500);
+    padding-top: 6pt;
+    font-size: 7.5pt;
+    color: var(--ga-gray-700);
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+  .ga-footer .brand-line {
+    font-weight: 700;
+    color: var(--ga-navy-500);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    margin-bottom: 2pt;
+  }
+  .ga-footer .brand-line .strap { color: var(--ga-crimson-500); }
+  .ga-footer .contact { display: flex; flex-wrap: wrap; gap: 0 14pt; }
+  .ga-footer .contact span b { color: var(--ga-navy-500); font-weight: 700; }
+  .ga-footer .pg {
+    position: absolute; right: 0; top: 6pt;
+    font-weight: 700; color: var(--ga-navy-500);
+  }
+
+  /* COVER */
+  .cover-page { display: flex; flex-direction: column; padding-top: 3.4cm; }
+  .cover-cap { font-size: 8pt; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.14em; text-transform: uppercase; margin: 4cm 0 14pt 0; }
+  .cover-title { font-size: 30pt; font-weight: 700; color: var(--ga-navy-500); line-height: 1.05; margin: 0 0 14pt 0; letter-spacing: -0.005em; }
+  .cover-sub { font-size: 12pt; color: var(--ga-gray-700); line-height: 1.4; max-width: 14cm; margin-bottom: 4cm; }
+  .cover-spacer { flex: 1; }
+  .cover-meta {
+    border-top: 2px solid var(--ga-navy-500);
+    padding-top: 12pt;
+    font-size: 10pt; color: var(--ga-black);
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12pt;
+    margin-bottom: 1.4cm;
+  }
+  .cover-meta .lbl { font-size: 7.5pt; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 4pt; }
+  .cover-meta .val { font-weight: 700; color: var(--ga-navy-500); font-size: 11pt; }
+
+  /* BODY content */
+  .doc-h1 { font-size: 14pt; font-weight: 700; color: var(--ga-navy-500); margin: 0 0 14pt 0; }
+  .doc-h2 { font-size: 12pt; font-weight: 700; color: var(--ga-crimson-500); margin: 22pt 0 8pt 0; }
+  .doc-body { font-size: 10pt; line-height: 1.5; text-align: justify; margin: 0 0 10pt 0; }
+  .doc-em { font-weight: 700; color: var(--ga-navy-500); }
+  .doc-note { font-size: 8pt; font-style: italic; color: var(--ga-gray-700); }
+  .doc-cap { font-size: 8pt; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6pt; }
+
+  table.doc-table { width: 100%; border-collapse: collapse; font-size: 10pt; margin: 6pt 0 14pt 0; }
+  .doc-table th { text-align: left; font-weight: 700; color: var(--ga-navy-500); border-bottom: 2px solid var(--ga-navy-500); padding: 6pt; font-size: 9pt; }
+  .doc-table td { border-bottom: 1px solid var(--ga-navy-100); padding: 6pt; }
+
+  .badge { display: inline-block; padding: 2pt 8pt; border-radius: 2px; font-size: 8pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; }
+  .badge.crit { background: var(--ga-crimson-500); }
+  .badge.mod  { background: var(--ga-warning); }
+  .badge.low  { background: var(--ga-success); }
+
+  .callout { border-radius: 4px; padding: 10pt 12pt; border-left: 4px solid; margin: 10pt 0; font-size: 10pt; line-height: 1.4; }
+  .callout .h { font-weight: 700; font-size: 9pt; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4pt; }
+  .callout.info { background: var(--ga-navy-50); border-color: var(--ga-navy-500); }
+  .callout.info .h { color: var(--ga-navy-500); }
+  .callout.risk { background: var(--ga-crimson-100); border-color: var(--ga-crimson-500); }
+  .callout.risk .h { color: var(--ga-crimson-500); }
+
+  /* Body offset for header band on internal pages */
+  .body-page { padding-top: 3.4cm; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .toolbar { display: none; }
+    .page { box-shadow: none; margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="window.print()">Imprimir / PDF</button>
+  <button class="pri" onclick="window.print()">Salvar como PDF</button>
+</div>
+
+<!-- ============= COVER ============= -->
+<div class="page cover-page">
+  <div class="ga-header">
+    <img class="wordmark" src="../assets/logo-global-advising.png" alt="Global Advising">
+    <img class="mark" src="../assets/logo-ga-mark.png" alt="GA">
+  </div>
+  <div class="ga-header-rule"></div>
+
+  <div class="cover-cap">Relatório de Consultoria</div>
+  <h1 class="cover-title">Avaliação de Riscos<br>Sede Corporativa</h1>
+  <div class="cover-sub">Análise integrada de perímetro, controle de acesso, CFTV e plano de continuidade operacional.</div>
+
+  <div class="cover-spacer"></div>
+
+  <div class="cover-meta">
+    <div><div class="lbl">Cliente</div><div class="val">Acme S.A.</div></div>
+    <div><div class="lbl">Data</div><div class="val">15/04/2026</div></div>
+    <div><div class="lbl">Referência</div><div class="val">GA-0142</div></div>
+  </div>
+
+  <div class="ga-footer">
+    <div class="pg">Página 1 / 2</div>
+    <div class="brand-line">Global Advising · <span class="strap">More Than Security</span></div>
+    <div class="contact">
+      <span>Av. Francisco Matarazzo, 1752 · Cj. 808/809 · Água Branca · São Paulo / SP</span>
+    </div>
+    <div class="contact">
+      <span><b>T</b> (11) 3079-4752</span>
+      <span><b>E</b> contato@gaadvising.com</span>
+      <span><b>W</b> www.gaadvising.com</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============= BODY PAGE ============= -->
+<div class="page body-page">
+  <div class="ga-header">
+    <img class="wordmark" src="../assets/logo-global-advising.png" alt="Global Advising">
+    <img class="mark" src="../assets/logo-ga-mark.png" alt="GA">
+  </div>
+  <div class="ga-header-rule"></div>
+
+  <h1 class="doc-h1">Relatório de Avaliação de Riscos</h1>
+  <p class="doc-body">O mapeamento profissional de riscos permite decisões precisas. Esta avaliação foi conduzida <em>in loco</em> seguindo a metodologia ISO 31000:2018 e os critérios da norma ASIS PSC.1, com escopo definido em conjunto com o cliente.</p>
+
+  <h2 class="doc-h2">1. Análise de Ameaças</h2>
+  <p class="doc-body">A análise priorizou vetores de exposição perimetral, integridade de acesso e cobertura de monitoramento. <span class="doc-em">Ameaça crítica identificada:</span> acesso perimetral não monitorado entre 02h00 e 05h30, com janela de aproximadamente 3,5 horas sem registro audiovisual.</p>
+
+  <div class="callout risk">
+    <div class="h">✗ Risco Crítico</div>
+    <div>Vulnerabilidade no perímetro sul. Recomenda-se ação corretiva em até 72 horas. Detalhamento na seção 3.</div>
+  </div>
+
+  <h2 class="doc-h2">2. Matriz de Risco</h2>
+  <div class="doc-cap">Tabela 1 · Matriz de Risco por Categoria</div>
+  <table class="doc-table">
+    <thead><tr><th>Categoria</th><th>Localização</th><th>Status</th><th>Ref.</th></tr></thead>
+    <tbody>
+      <tr><td>Acesso perimetral</td><td>Portaria Sul</td><td><span class="badge crit">Crítico</span></td><td>GA-0142.1</td></tr>
+      <tr><td>Cobertura CFTV</td><td>Estacionamento N3</td><td><span class="badge mod">Moderado</span></td><td>GA-0142.2</td></tr>
+      <tr><td>Controle de chaves</td><td>Recepção</td><td><span class="badge low">Baixo</span></td><td>GA-0142.3</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="doc-h2">3. Recomendações</h2>
+  <p class="doc-body">As recomendações abaixo seguem a ordem de prioridade ajustada à criticidade observada. Prazos são sugeridos com base em janelas operacionais típicas; ajustes específicos devem ser acordados com a operação.</p>
+
+  <div class="callout info">
+    <div class="h">ℹ Contexto</div>
+    <div>Recomendações baseadas em ISO 31000:2018 § 6.5 e em precedentes comparáveis no segmento.</div>
+  </div>
+
+  <p class="doc-note">Fonte: ISO 31000:2018 · ASIS PSC.1 · Avaliação in loco realizada em 15/04/2026.</p>
+
+  <div class="ga-footer">
+    <div class="pg">Página 2 / 2</div>
+    <div class="brand-line">Global Advising · <span class="strap">More Than Security</span></div>
+    <div class="contact">
+      <span>Av. Francisco Matarazzo, 1752 · Cj. 808/809 · Água Branca · São Paulo / SP</span>
+    </div>
+    <div class="contact">
+      <span><b>T</b> (11) 3079-4752</span>
+      <span><b>E</b> contato@gaadvising.com</span>
+      <span><b>W</b> www.gaadvising.com</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

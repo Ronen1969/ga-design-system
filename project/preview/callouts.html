@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Callouts</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 16px; background: #fff; font-family: Arial, sans-serif; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 668px; box-sizing: border-box; }
+  .co { border-radius: 4px; padding: 10px 12px; border-left-width: 4px; border-left-style: solid; font-size: 12px; line-height: 1.4; }
+  .co .h { font-weight: 700; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+  .co .b { color: var(--ga-black); }
+  .info { background: var(--ga-navy-50); border-color: var(--ga-navy-500); }
+  .info .h { color: var(--ga-navy-500); }
+  .ok { background: #E6F2EC; border-color: var(--ga-success); }
+  .ok .h { color: var(--ga-success); }
+  .warn { background: #FBF1DC; border-color: var(--ga-warning); }
+  .warn .h { color: var(--ga-warning); }
+  .risk { background: var(--ga-crimson-100); border-color: var(--ga-crimson-500); }
+  .risk .h { color: var(--ga-crimson-500); }
+</style></head>
+<body>
+<div class="co info"><div class="h">ℹ Contexto</div><div class="b">Metodologia ISO 31000:2018, escopo perimetral.</div></div>
+<div class="co ok"><div class="h">✓ Achado</div><div class="b">Controle de acesso aprovado em auditoria.</div></div>
+<div class="co warn"><div class="h">⚠ Atenção</div><div class="b">Calibração do CFTV pendente — prazo 30/05.</div></div>
+<div class="co risk"><div class="h">✗ Risco Crítico</div><div class="b">Acesso perimetral não monitorado, ação urgente.</div></div>
+</body></html>

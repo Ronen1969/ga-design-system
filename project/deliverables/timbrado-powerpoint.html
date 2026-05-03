@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Timbrado · Global Advising — PowerPoint</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap">
+<style>
+  :root { --slide-w: 1280px; --slide-h: 720px; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #15202b; }
+  body { font-family: Corbel, "Lato", "Helvetica Neue", Arial, sans-serif; color: var(--ga-black); padding: 24px; }
+  .nav { max-width: var(--slide-w); margin: 0 auto 12px; display: flex; gap: 8px; align-items: center; justify-content: space-between; color: #fff; font-family: Arial, sans-serif; font-size: 12px; }
+  .nav button { font-family: Arial, sans-serif; font-weight: 700; font-size: 12px; padding: 8px 14px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: #fff; cursor: pointer; letter-spacing: 0.04em; }
+  .nav button:hover { background: rgba(255,255,255,0.08); }
+  .counter { font-family: var(--ga-font-mono); font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.10em; }
+
+  .stack { max-width: var(--slide-w); margin: 0 auto; }
+  .slide {
+    width: var(--slide-w); height: var(--slide-h);
+    background: #fff;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.30);
+    position: relative;
+    overflow: hidden;
+    display: none;
+  }
+  .slide.active { display: block; }
+
+  /* Common chrome */
+  .s-logo { position: absolute; top: 32px; left: 48px; width: 140px; height: auto; }
+  .s-logo.knockout { filter: brightness(0) invert(1); }
+  .s-num { position: absolute; bottom: 24px; right: 48px; font-family: var(--ga-font-mono); font-size: 11px; letter-spacing: 0.12em; }
+  .s-rule { position: absolute; left: 48px; right: 48px; bottom: 56px; height: 2px; background: var(--ga-navy-500); }
+
+  /* SLIDE 1 — TITLE / DIVIDER */
+  .s-title { background: var(--ga-navy-500); color: #fff; }
+  .s-title .s-num { color: rgba(255,255,255,0.5); }
+  .s-title .s-rule { background: var(--ga-crimson-500); }
+  .s-title .body { position: absolute; left: 48px; right: 48px; top: 240px; }
+  .s-title .cap { font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.20em; text-transform: uppercase; margin-bottom: 24px; }
+  .s-title h1 { font-family: Corbel, "Lato", sans-serif; font-size: 88px; font-weight: 700; line-height: 1; margin: 0 0 24px 0; letter-spacing: -0.01em; }
+  .s-title .sub { font-family: Corbel, "Lato", sans-serif; font-size: 22px; color: rgba(255,255,255,0.75); max-width: 880px; line-height: 1.4; }
+  .s-title .meta { position: absolute; left: 48px; bottom: 88px; font-family: Arial, sans-serif; font-size: 13px; color: rgba(255,255,255,0.65); letter-spacing: 0.06em; }
+  .s-title .meta b { color: #fff; font-weight: 700; }
+
+  /* SLIDE 2 — AGENDA */
+  .s-agenda { background: #fff; }
+  .s-agenda .body { position: absolute; top: 130px; left: 48px; right: 48px; bottom: 80px; }
+  .s-agenda .cap { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 18px; }
+  .s-agenda h2 { font-family: Corbel, "Lato", sans-serif; font-size: 56px; font-weight: 700; color: var(--ga-navy-500); margin: 0 0 36px 0; line-height: 1.05; letter-spacing: -0.01em; }
+  .s-agenda ol { list-style: none; counter-reset: ag; padding: 0; margin: 0; max-width: 720px; }
+  .s-agenda li { counter-increment: ag; display: grid; grid-template-columns: 64px 1fr; gap: 24px; padding: 18px 0; border-top: 1px solid var(--ga-navy-100); align-items: baseline; }
+  .s-agenda li:last-child { border-bottom: 1px solid var(--ga-navy-100); }
+  .s-agenda li::before { content: counter(ag, decimal-leading-zero); font-family: var(--ga-font-mono); font-size: 18px; color: var(--ga-crimson-500); font-weight: 700; letter-spacing: 0.04em; }
+  .s-agenda li .t { font-family: Corbel, "Lato", sans-serif; font-size: 26px; color: var(--ga-navy-500); font-weight: 700; }
+  .s-agenda li .d { font-family: Arial, sans-serif; font-size: 14px; color: var(--ga-gray-700); margin-top: 4px; }
+
+  /* SLIDE 3 — SECTION DIVIDER */
+  .s-section { background: var(--ga-crimson-500); color: #fff; }
+  .s-section .body { position: absolute; left: 48px; bottom: 120px; right: 48px; }
+  .s-section .num { font-family: var(--ga-font-mono); font-size: 18px; letter-spacing: 0.20em; color: rgba(255,255,255,0.6); margin-bottom: 24px; }
+  .s-section h2 { font-family: Corbel, "Lato", sans-serif; font-size: 96px; font-weight: 700; line-height: 1; margin: 0; letter-spacing: -0.02em; }
+  .s-section .sub { font-family: Arial, sans-serif; font-size: 18px; color: rgba(255,255,255,0.85); margin-top: 18px; max-width: 700px; line-height: 1.5; }
+  .s-section .s-rule { background: rgba(255,255,255,0.4); }
+
+  /* SLIDE 4 — CONTENT (text + matrix) */
+  .s-content { background: #fff; }
+  .s-content .body { position: absolute; top: 130px; left: 48px; right: 48px; bottom: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .s-content .cap { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 14px; }
+  .s-content h2 { font-family: Corbel, "Lato", sans-serif; font-size: 44px; font-weight: 700; color: var(--ga-navy-500); margin: 0 0 24px 0; line-height: 1.1; letter-spacing: -0.01em; }
+  .s-content p { font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: var(--ga-black); margin: 0 0 14px 0; }
+  .s-content .em { font-weight: 700; color: var(--ga-navy-500); }
+  .s-content .right { display: flex; flex-direction: column; gap: 12px; padding-top: 32px; }
+  .s-content .row { display: grid; grid-template-columns: 1fr 110px; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--ga-navy-100); }
+  .s-content .row:first-child { border-top: 2px solid var(--ga-navy-500); padding-top: 14px; }
+  .s-content .row .name { font-family: Arial, sans-serif; font-size: 15px; color: var(--ga-black); font-weight: 700; }
+  .s-content .row .meta { font-family: Arial, sans-serif; font-size: 12px; color: var(--ga-gray-700); margin-top: 2px; }
+  .badge { display: inline-flex; align-items: center; height: 22px; padding: 0 10px; border-radius: 2px; font-family: Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; justify-self: end; }
+  .badge.crit { background: var(--ga-crimson-500); }
+  .badge.mod { background: var(--ga-warning); }
+  .badge.low { background: var(--ga-success); }
+
+  /* SLIDE 5 — BIG QUOTE */
+  .s-quote { background: var(--ga-navy-50); }
+  .s-quote .body { position: absolute; top: 200px; left: 96px; right: 96px; }
+  .s-quote .mark { font-family: Corbel, "Lato", sans-serif; font-size: 120px; line-height: 0.6; color: var(--ga-crimson-500); margin-bottom: 24px; }
+  .s-quote blockquote { font-family: Corbel, "Lato", sans-serif; font-size: 44px; font-weight: 700; line-height: 1.2; color: var(--ga-navy-500); margin: 0; letter-spacing: -0.01em; max-width: 1000px; }
+  .s-quote .attr { font-family: Arial, sans-serif; font-size: 14px; color: var(--ga-gray-700); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 32px; }
+  .s-quote .attr b { color: var(--ga-crimson-500); font-weight: 700; }
+
+  /* SLIDE 6 — CLOSING */
+  .s-close { background: var(--ga-navy-700); color: #fff; }
+  .s-close .body { position: absolute; left: 48px; right: 48px; top: 50%; transform: translateY(-50%); text-align: left; }
+  .s-close h2 { font-family: Corbel, "Lato", sans-serif; font-size: 96px; font-weight: 700; line-height: 1; margin: 0 0 32px 0; letter-spacing: -0.02em; }
+  .s-close .strap { font-family: Arial, sans-serif; font-size: 13px; color: var(--ga-crimson-500); letter-spacing: 0.30em; text-transform: uppercase; margin-bottom: 18px; font-weight: 700; }
+  .s-close .contact { font-family: Arial, sans-serif; font-size: 16px; color: rgba(255,255,255,0.7); line-height: 1.6; margin-top: 56px; }
+  .s-close .contact b { color: #fff; font-weight: 700; }
+  .s-close .s-rule { background: var(--ga-crimson-500); }
+  .s-close .s-num { color: rgba(255,255,255,0.5); }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div>
+    <button onclick="prev()">← Anterior</button>
+    <button onclick="next()">Próximo →</button>
+  </div>
+  <div class="counter" id="counter">01 / 06</div>
+  <button onclick="window.print()">Imprimir</button>
+</div>
+
+<div class="stack" id="stack">
+  <!-- 1: TITLE -->
+  <section class="slide s-title active" data-screen-label="01 Title">
+    <img class="s-logo knockout" src="../assets/logo-global-advising.png" alt="GA">
+    <div class="body">
+      <div class="cap">Relatório Executivo · 2026</div>
+      <h1>Avaliação de<br>Riscos Integrada</h1>
+      <div class="sub">Inteligência, prevenção e gestão de riscos para uma operação sem pontos cegos.</div>
+    </div>
+    <div class="meta">CLIENTE <b>Acme S.A.</b> &nbsp;·&nbsp; DATA <b>15/04/2026</b> &nbsp;·&nbsp; REF <b>GA-0142</b></div>
+    <div class="s-rule"></div>
+    <div class="s-num" style="color: rgba(255,255,255,0.5);">01</div>
+  </section>
+
+  <!-- 2: AGENDA -->
+  <section class="slide s-agenda" data-screen-label="02 Agenda">
+    <img class="s-logo" src="../assets/logo-global-advising.png" alt="GA">
+    <div class="body">
+      <div class="cap">Agenda</div>
+      <h2>O que vamos cobrir</h2>
+      <ol>
+        <li><div><div class="t">Análise de ameaças</div><div class="d">Vetores prioritários e janelas de exposição.</div></div></li>
+        <li><div><div class="t">Matriz de risco</div><div class="d">Categorias mapeadas com criticidade aferida.</div></div></li>
+        <li><div><div class="t">Recomendações</div><div class="d">Ações corretivas com prazo e responsável.</div></div></li>
+        <li><div><div class="t">Próximos passos</div><div class="d">Cronograma e revisão programada.</div></div></li>
+      </ol>
+    </div>
+    <div class="s-rule"></div>
+    <div class="s-num" style="color: var(--ga-gray-700);">02 / 06</div>
+  </section>
+
+  <!-- 3: SECTION DIVIDER -->
+  <section class="slide s-section" data-screen-label="03 Section">
+    <img class="s-logo knockout" src="../assets/logo-global-advising.png" alt="GA">
+    <div class="body">
+      <div class="num">PARTE 01</div>
+      <h2>Análise de<br>Ameaças</h2>
+      <div class="sub">Mapeamento conduzido in loco, segundo metodologia ISO 31000:2018 e critérios da norma ASIS PSC.1.</div>
+    </div>
+    <div class="s-rule"></div>
+    <div class="s-num" style="color: rgba(255,255,255,0.5);">03 / 06</div>
+  </section>
+
+  <!-- 4: CONTENT (split) -->
+  <section class="slide s-content" data-screen-label="04 Content">
+    <img class="s-logo" src="../assets/logo-global-advising.png" alt="GA">
+    <div class="body">
+      <div class="left">
+        <div class="cap">Achado · Perímetro Sul</div>
+        <h2>Janela de exposição<br>de 3,5 horas</h2>
+        <p>O mapeamento profissional de riscos permite decisões precisas. <span class="em">Ameaça crítica identificada:</span> acesso perimetral não monitorado entre 02h00 e 05h30.</p>
+        <p>Recomenda-se ação corretiva em até 72 horas, com instalação de cobertura adicional de CFTV e ronda programada.</p>
+      </div>
+      <div class="right">
+        <div class="row"><div><div class="name">Acesso perimetral</div><div class="meta">Portaria Sul · GA-0142.1</div></div><span class="badge crit">Crítico</span></div>
+        <div class="row"><div><div class="name">Cobertura CFTV</div><div class="meta">Estacionamento N3 · GA-0142.2</div></div><span class="badge mod">Moderado</span></div>
+        <div class="row"><div><div class="name">Controle de chaves</div><div class="meta">Recepção · GA-0142.3</div></div><span class="badge low">Baixo</span></div>
+        <div class="row"><div><div class="name">Plano de continuidade</div><div class="meta">Operação 24/7 · GA-0142.4</div></div><span class="badge low">Baixo</span></div>
+      </div>
+    </div>
+    <div class="s-rule"></div>
+    <div class="s-num" style="color: var(--ga-gray-700);">04 / 06</div>
+  </section>
+
+  <!-- 5: BIG QUOTE -->
+  <section class="slide s-quote" data-screen-label="05 Quote">
+    <img class="s-logo" src="../assets/logo-global-advising.png" alt="GA">
+    <div class="body">
+      <div class="mark">"</div>
+      <blockquote>Competência sem ostentação. Precisão sem frieza. Autoridade sem distância.</blockquote>
+      <div class="attr">Missão de Marca · <b>Global Advising 2026</b></div>
+    </div>
+    <div class="s-rule"></div>
+    <div class="s-num" style="color: var(--ga-gray-700);">05 / 06</div>
+  </section>
+
+  <!-- 6: CLOSING -->
+  <section class="slide s-close" data-screen-label="06 Closing">
+    <img class="s-logo knockout" src="../assets/logo-global-advising.png" alt="GA">
+    <div class="body">
+      <div class="strap">More than security</div>
+      <h2>Obrigado.</h2>
+      <div class="contact">
+        <b>contato@gaadvising.com</b><br>
+        www.gaadvising.com
+      </div>
+    </div>
+    <div class="s-rule"></div>
+    <div class="s-num">06 / 06</div>
+  </section>
+</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  let i = 0;
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    document.getElementById('counter').textContent = String(i+1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+  }
+  window.next = () => show(i + 1);
+  window.prev = () => show(i - 1);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(i - 1); }
+  });
+  show(0);
+})();
+</script>
+
+</body>
+</html>

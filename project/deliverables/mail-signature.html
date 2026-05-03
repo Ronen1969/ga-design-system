@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mail Signature · Global Advising</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap">
+<style>
+  body { margin: 0; background: var(--ga-navy-50); font-family: Arial, sans-serif; padding: 36px 24px; }
+  .wrap { max-width: 880px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+  .panel { background: #fff; padding: 28px; border-radius: 6px; border: 1px solid var(--ga-navy-100); }
+  h1 { font-family: Corbel, "Lato", sans-serif; font-size: 28px; font-weight: 700; color: var(--ga-navy-500); margin: 0 0 8px 0; letter-spacing: -0.01em; }
+  .lead { font-size: 14px; color: var(--ga-gray-700); line-height: 1.5; margin: 0 0 18px 0; }
+  .cap { font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 12px; }
+
+  /* Form */
+  .form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin-bottom: 18px; }
+  .form label { display: flex; flex-direction: column; gap: 4px; font-size: 11px; font-weight: 700; color: var(--ga-navy-500); letter-spacing: 0.06em; text-transform: uppercase; }
+  .form input { font-family: Arial, sans-serif; font-size: 14px; padding: 8px 10px; border-radius: 2px; border: 1px solid var(--ga-navy-100); color: var(--ga-black); outline: none; }
+  .form input:focus { border-color: var(--ga-crimson-500); box-shadow: 0 0 0 2px rgba(146,21,58,0.15); }
+  .form .full { grid-column: 1 / -1; }
+
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .actions button { font-family: Arial, sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.04em; padding: 10px 18px; border-radius: 2px; border: none; cursor: pointer; transition: background 150ms ease-in-out; }
+  .actions .pri { background: var(--ga-crimson-500); color: #fff; }
+  .actions .pri:hover { background: var(--ga-crimson-700); }
+  .actions .sec { background: var(--ga-navy-500); color: #fff; }
+  .actions .sec:hover { background: var(--ga-navy-700); }
+  .actions .ghost { background: transparent; color: var(--ga-navy-500); border: 1px solid var(--ga-navy-500); }
+  .actions .ghost:hover { background: var(--ga-navy-50); }
+
+  /* Preview frame */
+  .preview-frame { background: #f6f8fa; border: 1px solid var(--ga-navy-100); border-radius: 4px; padding: 24px; }
+  .preview-frame .from { font-size: 12px; color: var(--ga-gray-700); margin-bottom: 6px; }
+  .preview-frame .from b { color: var(--ga-black); font-weight: 700; }
+  .preview-frame .body-line { font-size: 14px; color: var(--ga-black); line-height: 1.5; margin-bottom: 24px; }
+
+  /* HTML out */
+  .out {
+    font-family: var(--ga-font-mono); font-size: 12px; background: var(--ga-navy-700); color: #d8e1ec;
+    padding: 16px; border-radius: 4px; overflow-x: auto; max-height: 240px; overflow-y: auto;
+    line-height: 1.5; white-space: pre;
+  }
+
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ga-navy-500); color: #fff; padding: 10px 18px; border-radius: 2px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; opacity: 0; transition: opacity 150ms; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="panel">
+    <h1>Assinatura de E-mail</h1>
+    <p class="lead">Preencha seus dados e copie o HTML para o seu cliente de e-mail (Outlook, Gmail, Apple Mail). A assinatura usa apenas Arial e fontes do sistema — sem dependência de imagens externas além do logo.</p>
+
+    <div class="form">
+      <label>Nome completo<input id="f-name" value="Mariana Souza"></label>
+      <label>Cargo<input id="f-role" value="Consultora Sênior"></label>
+      <label class="full">Departamento <input id="f-dept" value="Inteligência & Riscos"></label>
+      <label>Telefone<input id="f-phone" value="+55 11 4002-8922"></label>
+      <label>E-mail<input id="f-email" value="mariana.souza@gaadvising.com"></label>
+      <label class="full">Site<input id="f-site" value="www.gaadvising.com"></label>
+    </div>
+
+    <div class="actions">
+      <button class="pri" onclick="copyHtml()">Copiar HTML</button>
+      <button class="sec" onclick="copyRendered()">Copiar como texto formatado</button>
+      <button class="ghost" onclick="downloadHtml()">Baixar .html</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="cap">Pré-visualização</div>
+    <div class="preview-frame">
+      <div class="from">De: <b id="p-name-mail">Mariana Souza</b> &lt;<span id="p-email-mail">mariana.souza@gaadvising.com</span>&gt;</div>
+      <div class="body-line">Prezado(a),<br><br>Segue em anexo o relatório referenciado. Permaneço à disposição.<br><br>Atenciosamente,</div>
+      <div id="signature-render"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="cap">HTML Source</div>
+    <div class="out" id="html-out"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copiado para a área de transferência</div>
+
+<script>
+const LOGO_URL = (location.origin === 'null' || location.protocol === 'file:')
+  ? '../assets/logo-global-advising.png'
+  : new URL('../assets/logo-global-advising.png', location.href).href;
+
+function buildSignatureHtml(data) {
+  // Email-client-safe: tables, inline styles, no external CSS, no flexbox.
+  const navy = '#002341', crimson = '#92153A', black = '#1A1A1A', gray = '#4A4B4D', divider = '#BFC8CF';
+  return (
+`<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;color:${black};">
+  <tr>
+    <td style="padding:0 18px 0 0;border-right:2px solid ${crimson};vertical-align:top;">
+      <img src="${LOGO_URL}" width="120" height="" alt="Global Advising" style="display:block;border:0;">
+    </td>
+    <td style="padding:0 0 0 18px;vertical-align:top;font-family:Arial,Helvetica,sans-serif;">
+      <div style="font-size:14px;font-weight:700;color:${navy};letter-spacing:0.02em;">${data.name}</div>
+      <div style="font-size:12px;color:${black};margin-top:2px;">${data.role}</div>
+      <div style="font-size:11px;color:${gray};margin-top:2px;">${data.dept}</div>
+      <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:10px 0 6px 0;">More than security</div>
+      <div style="font-size:11px;color:${black};line-height:1.55;">
+        <span style="color:${gray};">T</span>&nbsp;${data.phone}<br>
+        <span style="color:${gray};">E</span>&nbsp;<a href="mailto:${data.email}" style="color:${crimson};text-decoration:none;font-weight:700;">${data.email}</a><br>
+        <span style="color:${gray};">W</span>&nbsp;<a href="https://${data.site.replace(/^https?:\\/\\//,'')}" style="color:${navy};text-decoration:none;font-weight:700;">${data.site}</a>
+      </div>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="padding-top:12px;border-top:1px solid ${divider};font-size:9px;color:${gray};letter-spacing:0.04em;line-height:1.5;font-family:Arial,Helvetica,sans-serif;">
+    Esta mensagem é confidencial e destinada exclusivamente ao(s) destinatário(s). Em caso de recebimento indevido, favor notificar o remetente e excluir.
+  </td></tr>
+</table>`);
+}
+
+function getData() {
+  return {
+    name: document.getElementById('f-name').value || ' ',
+    role: document.getElementById('f-role').value || ' ',
+    dept: document.getElementById('f-dept').value || ' ',
+    phone: document.getElementById('f-phone').value || ' ',
+    email: document.getElementById('f-email').value || ' ',
+    site: document.getElementById('f-site').value || ' ',
+  };
+}
+
+function render() {
+  const d = getData();
+  const html = buildSignatureHtml(d);
+  document.getElementById('signature-render').innerHTML = html;
+  document.getElementById('html-out').textContent = html;
+  document.getElementById('p-name-mail').textContent = d.name;
+  document.getElementById('p-email-mail').textContent = d.email;
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+async function copyHtml() {
+  const html = document.getElementById('html-out').textContent;
+  try { await navigator.clipboard.writeText(html); toast('HTML copiado'); }
+  catch { toast('Falha ao copiar — selecione manualmente'); }
+}
+
+async function copyRendered() {
+  const html = document.getElementById('html-out').textContent;
+  try {
+    if (window.ClipboardItem) {
+      const blob = new Blob([html], {type: 'text/html'});
+      const txt = new Blob([document.getElementById('signature-render').innerText], {type: 'text/plain'});
+      await navigator.clipboard.write([new ClipboardItem({'text/html': blob, 'text/plain': txt})]);
+      toast('Assinatura copiada (rich)');
+    } else {
+      const range = document.createRange();
+      range.selectNode(document.getElementById('signature-render'));
+      const sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(range);
+      document.execCommand('copy');
+      sel.removeAllRanges();
+      toast('Assinatura copiada');
+    }
+  } catch (e) { toast('Falha ao copiar'); }
+}
+
+function downloadHtml() {
+  const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>GA Signature</title></head><body>' + document.getElementById('html-out').textContent + '</body></html>';
+  const blob = new Blob([html], {type: 'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ga-signature.html';
+  a.click();
+  toast('Arquivo baixado');
+}
+
+document.querySelectorAll('.form input').forEach(el => el.addEventListener('input', render));
+render();
+</script>
+
+</body>
+</html>

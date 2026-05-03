@@ -1,0 +1,217 @@
+/* ==========================================================================
+   Global Advising — Design Tokens
+   Sourced from: GlobalAdvising GuiaMarca 2026
+   ========================================================================== */
+
+:root {
+  /* ---------- PRIMARY COLORS ---------- */
+  --ga-crimson: #92153A;          /* Actions, titles, emphasis */
+  --ga-navy:    #002341;          /* Backgrounds, primary text */
+  --ga-gray:    #797A7D;          /* Secondary text — fails AA on white, see Gray-700 */
+  --ga-black:   #1A1A1A;          /* Body text */
+  --ga-white:   #FFFFFF;
+
+  /* ---------- CRIMSON SCALE ---------- */
+  --ga-crimson-100: #F4E7EB;      /* Callout backgrounds */
+  --ga-crimson-200: #DEB8C3;      /* Borders, dividers */
+  --ga-crimson-500: #92153A;      /* Base */
+  --ga-crimson-700: #6B1028;      /* Hover, strong emphasis */
+
+  /* ---------- NAVY SCALE ---------- */
+  --ga-navy-50:  #EAEDEF;         /* Section backgrounds */
+  --ga-navy-100: #BFC8CF;         /* Table lines */
+  --ga-navy-500: #002341;         /* Base */
+  --ga-navy-700: #001428;         /* Dark mode, deep backgrounds */
+
+  /* ---------- GRAY SCALE ---------- */
+  --ga-gray-500: #797A7D;         /* Original — caution on white */
+  --ga-gray-700: #4A4B4D;         /* AAA on white — body substitute */
+
+  /* ---------- FUNCTIONAL / STATUS ---------- */
+  --ga-success: #1A6B3C;          /* OK, approved */
+  --ga-warning: #7A4F00;          /* Pending, attention */
+  --ga-risk:    #92153A;          /* Critical (= Crimson) */
+  --ga-neutral: #4A4B4D;          /* Inactive */
+
+  /* ---------- CALLOUT BACKGROUNDS ---------- */
+  --ga-callout-info-bg:    var(--ga-navy-50);
+  --ga-callout-info-border:var(--ga-navy-500);
+  --ga-callout-ok-bg:      #E6F2EC;
+  --ga-callout-ok-border:  var(--ga-success);
+  --ga-callout-warn-bg:    #FBF1DC;
+  --ga-callout-warn-border:var(--ga-warning);
+  --ga-callout-risk-bg:    var(--ga-crimson-100);
+  --ga-callout-risk-border:var(--ga-crimson-500);
+
+  /* ==========================================================================
+     TYPOGRAPHY
+     Two-family system:
+       • Arial — formal documents (Word, reports, PDF)
+       • Corbel — communication/marketing (decks, web, signature)
+     Editorial rule: bold IS allowed in 2026 (revised). NEVER underline.
+     ========================================================================== */
+
+  --ga-font-formal: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --ga-font-comms:  Corbel, "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ga-font-mono:   "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Base */
+  --ga-text-base: 10pt;
+  --ga-line-base: 1.15;
+  --ga-letter-caps: 0.08em;
+
+  /* ---------- FORMAL (Arial) SCALE — pt + px equivalents for web ---------- */
+  --ga-h1-size:    14pt;          /* ~18.66px */
+  --ga-h1-weight:  700;
+  --ga-h1-color:   var(--ga-navy-500);
+
+  --ga-h2-size:    12pt;          /* ~16px */
+  --ga-h2-weight:  700;
+  --ga-h2-color:   var(--ga-crimson-500);
+
+  --ga-body-size:  10pt;          /* ~13.3px */
+  --ga-body-weight:400;
+  --ga-body-color: var(--ga-black);
+
+  --ga-inline-emphasis-color: var(--ga-navy-500);
+
+  --ga-note-size:  8pt;
+  --ga-note-style: italic;
+  --ga-note-color: var(--ga-gray-700);
+
+  --ga-caption-size:  8pt;
+  --ga-caption-weight:700;
+  --ga-caption-color: var(--ga-crimson-500);
+  --ga-caption-tracking: 0.08em;
+
+  /* ==========================================================================
+     SPACING — Grid 8pt
+     ========================================================================== */
+  --ga-space-1: 8pt;              /* 160 DXA — internal lines */
+  --ga-space-2: 16pt;             /* 320 DXA — after paragraph */
+  --ga-space-3: 24pt;             /* 480 DXA — between subsections */
+  --ga-space-4: 32pt;             /* 640 DXA — before H2 */
+  --ga-space-6: 48pt;             /* 960 DXA — before H1 */
+  --ga-space-8: 64pt;             /* 1280 DXA — between major sections */
+
+  /* Page margins (formal docs) */
+  --ga-margin-top:    3cm;
+  --ga-margin-bottom: 2cm;
+  --ga-margin-left:   3cm;
+  --ga-margin-right:  2cm;
+
+  /* ==========================================================================
+     BORDERS / RADII / SHADOWS
+     The brand is restrained — radii are small, shadows minimal.
+     ========================================================================== */
+  --ga-radius-0: 0;
+  --ga-radius-1: 2px;             /* Badges, inline tags */
+  --ga-radius-2: 4px;             /* Callouts, table cells */
+  --ga-radius-3: 6px;             /* Cards (sparingly) */
+
+  --ga-border-thin:  1px solid var(--ga-navy-100);
+  --ga-border-rule:  2px solid var(--ga-navy-500);
+  --ga-border-callout-info: 4px solid var(--ga-navy-500);
+  --ga-border-callout-ok:   4px solid var(--ga-success);
+  --ga-border-callout-warn: 4px solid var(--ga-warning);
+  --ga-border-callout-risk: 4px solid var(--ga-crimson-500);
+
+  --ga-shadow-print:  0 1px 0 rgba(0, 35, 65, 0.06);
+  --ga-shadow-soft:   0 2px 8px rgba(0, 35, 65, 0.08);
+  --ga-shadow-strong: 0 8px 24px rgba(0, 35, 65, 0.14);
+}
+
+/* ==========================================================================
+   SEMANTIC ELEMENT STYLES
+   Apply by adding class="ga-doc" to a wrapper.
+   ========================================================================== */
+.ga-doc {
+  font-family: var(--ga-font-formal);
+  font-size: var(--ga-body-size);
+  line-height: var(--ga-line-base);
+  color: var(--ga-body-color);
+  text-align: justify;
+}
+
+.ga-doc h1, .ga-h1 {
+  font-family: var(--ga-font-formal);
+  font-size: var(--ga-h1-size);
+  font-weight: var(--ga-h1-weight);
+  color: var(--ga-h1-color);
+  margin-top: var(--ga-space-6);
+  margin-bottom: var(--ga-space-2);
+  text-align: left;
+}
+
+.ga-doc h2, .ga-h2 {
+  font-family: var(--ga-font-formal);
+  font-size: var(--ga-h2-size);
+  font-weight: var(--ga-h2-weight);
+  color: var(--ga-h2-color);
+  margin-top: var(--ga-space-4);
+  margin-bottom: var(--ga-space-1);
+  text-align: left;
+}
+
+.ga-doc p, .ga-body {
+  font-family: var(--ga-font-formal);
+  font-size: var(--ga-body-size);
+  font-weight: var(--ga-body-weight);
+  color: var(--ga-body-color);
+  margin-top: 0;
+  margin-bottom: var(--ga-space-2);
+  text-align: justify;
+  line-height: var(--ga-line-base);
+}
+
+.ga-doc strong, .ga-emphasis {
+  font-weight: 700;
+  color: var(--ga-inline-emphasis-color);
+}
+
+.ga-doc em, .ga-note {
+  font-style: italic;
+  font-size: var(--ga-note-size);
+  color: var(--ga-note-color);
+}
+
+.ga-caption {
+  font-family: var(--ga-font-formal);
+  font-size: var(--ga-caption-size);
+  font-weight: var(--ga-caption-weight);
+  color: var(--ga-caption-color);
+  letter-spacing: var(--ga-caption-tracking);
+  text-transform: uppercase;
+}
+
+/* Hard rule: never underline. */
+.ga-doc a, .ga-doc u { text-decoration: none; }
+.ga-doc a { color: var(--ga-crimson-500); font-weight: 600; }
+.ga-doc a:hover { color: var(--ga-crimson-700); }
+
+/* Lists — clean, no decoration */
+.ga-doc ul, .ga-doc ol {
+  padding-left: 1.25em;
+  margin: 0 0 var(--ga-space-2) 0;
+}
+.ga-doc li { margin-bottom: 4pt; }
+
+/* Tables — Navy lines, AAA contrast */
+.ga-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--ga-font-formal);
+  font-size: var(--ga-body-size);
+}
+.ga-table th {
+  text-align: left;
+  font-weight: 700;
+  color: var(--ga-navy-500);
+  border-bottom: var(--ga-border-rule);
+  padding: 8pt 6pt;
+}
+.ga-table td {
+  border-bottom: 1px solid var(--ga-navy-100);
+  padding: 6pt;
+  color: var(--ga-black);
+}

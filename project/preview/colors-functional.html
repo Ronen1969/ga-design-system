@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Functional Colors</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; font-family: var(--ga-font-formal); background: #fff; padding: 16px; }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 668px; }
+  .sw { border-radius: 4px; overflow: hidden; border: 1px solid var(--ga-navy-100); }
+  .chip { height: 90px; display: flex; align-items: flex-end; justify-content: flex-start; padding: 8px; color: #fff; font-weight: 700; font-size: 14px; }
+  .meta { padding: 8px 10px; font-size: 11px; line-height: 1.4; }
+  .name { font-weight: 700; color: var(--ga-navy-500); letter-spacing: 0.04em; text-transform: uppercase; }
+  .hex { color: var(--ga-gray-700); font-family: var(--ga-font-mono); font-size: 10px; }
+  .use { color: var(--ga-gray-700); font-size: 10px; margin-top: 2px; }
+</style></head>
+<body><div class="row">
+  <div class="sw"><div class="chip" style="background:#1A6B3C">✓</div><div class="meta"><div class="name">Sucesso</div><div class="hex">#1A6B3C</div><div class="use">Status OK</div></div></div>
+  <div class="sw"><div class="chip" style="background:#7A4F00">⚠</div><div class="meta"><div class="name">Atenção</div><div class="hex">#7A4F00</div><div class="use">Pendente</div></div></div>
+  <div class="sw"><div class="chip" style="background:#92153A">✗</div><div class="meta"><div class="name">Risco</div><div class="hex">#92153A</div><div class="use">Crítico</div></div></div>
+  <div class="sw"><div class="chip" style="background:#4A4B4D">—</div><div class="meta"><div class="name">Neutro</div><div class="hex">#4A4B4D</div><div class="use">Inativo · dados</div></div></div>
+</div></body></html>

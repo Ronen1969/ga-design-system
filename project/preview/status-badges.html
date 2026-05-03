@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Status Badges</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; font-family: Arial, sans-serif; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; width: 652px; box-sizing: border-box; }
+  .b { display: inline-flex; align-items: center; height: 22px; padding: 0 10px; border-radius: 2px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .crit { background: var(--ga-crimson-500); color: #fff; }
+  .mod { background: var(--ga-warning); color: #fff; }
+  .low { background: var(--ga-success); color: #fff; }
+  .mon { background: var(--ga-navy-500); color: #fff; }
+  .inativo { background: var(--ga-navy-50); color: var(--ga-gray-700); border: 1px solid var(--ga-navy-100); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .label { font-family: var(--ga-font-mono); font-size: 10px; color: var(--ga-gray-700); text-transform: uppercase; letter-spacing: 0.06em; width: 100%; margin-top: 4px; }
+</style></head>
+<body>
+<div class="label">Risk levels</div>
+<div class="row">
+  <span class="b crit">Crítico</span>
+  <span class="b mod">Moderado</span>
+  <span class="b low">Baixo</span>
+  <span class="b mon">Monitorar</span>
+  <span class="b inativo">Inativo</span>
+</div>
+</body></html>
