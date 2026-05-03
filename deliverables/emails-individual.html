@@ -15,7 +15,7 @@
     padding: 0 40px; display: flex; align-items: center; justify-content: space-between;
     height: 56px; position: sticky; top: 0; z-index: 50;
   }
-  .site-header img { height: 28px; }
+  .site-header img { height: 36px; }
   .site-header .strap { font-size: 10px; font-weight: 700; color: var(--ga-gray-700); letter-spacing: 0.20em; text-transform: uppercase; }
 
   .hero { background: var(--ga-navy-500); padding: 40px 40px 36px; }
@@ -75,16 +75,14 @@
   .row-body { display: none; border-top: 1px solid var(--ga-navy-100); }
   .row-body.open { display: block; }
   .email-preview {
-    padding: 18px 20px 18px 68px; background: #f6f8fa;
+    padding: 20px 24px 20px 68px; background: #f6f8fa;
     border-bottom: 1px solid var(--ga-navy-100);
   }
-  .ep-subject { font-size: 12px; font-weight: 700; color: var(--ga-navy-500); margin-bottom: 12px; }
-  .ep-subject span { font-size: 10px; font-weight: 400; color: var(--ga-gray-700); margin-right: 6px; }
-  .ep-body {
-    font-size: 13px; line-height: 1.65; color: var(--ga-black);
-    white-space: pre-wrap; font-family: Arial, sans-serif;
-  }
-  .ep-link { color: var(--ga-crimson-500); font-weight: 700; word-break: break-all; }
+  .ep-meta { display: flex; flex-direction: column; gap: 3px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--ga-navy-100); }
+  .ep-meta-row { display: flex; gap: 8px; font-size: 12px; }
+  .ep-meta-row .lbl { font-weight: 700; color: var(--ga-navy-500); width: 52px; flex-shrink: 0; }
+  .ep-meta-row .val { color: var(--ga-black); }
+  .ep-rendered { background: #fff; border: 1px solid var(--ga-navy-100); border-radius: 4px; padding: 24px; }
 
   .toast {
     position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
@@ -186,11 +184,84 @@ function getSender() {
   };
 }
 
-function buildBody(emp, sender) {
+/* ── BRANDED HTML EMAIL ── */
+function buildHtmlEmail(emp, sender) {
+  const navy = '#002341', crimson = '#92153A', black = '#1A1A1A', gray = '#4A4B4D', divider = '#BFC8CF', bg = '#EAEDEF';
+  const link = SIG_BASE + anchor(emp.email);
+  const logoUrl = BASE_URL + '/assets/logo-global-advising.png';
+  return `<table cellpadding="0" cellspacing="0" border="0" width="600" style="font-family:Arial,Helvetica,sans-serif;color:${black};font-size:14px;line-height:1.6;max-width:600px;">
+
+  <!-- HEADER -->
+  <tr>
+    <td style="padding:0 0 16px 0;border-bottom:2px solid ${crimson};">
+      <img src="${logoUrl}" width="180" alt="Global Advising" style="display:block;border:0;">
+    </td>
+  </tr>
+
+  <!-- GREETING -->
+  <tr>
+    <td style="padding:24px 0 0 0;">
+      <p style="margin:0 0 14px 0;">${firstName(emp.name)},</p>
+      <p style="margin:0 0 20px 0;">O sistema de marca <strong style="color:${navy};">Global Advising 2026</strong> está disponível. Configure sua assinatura de e-mail agora — leva menos de 3 minutos.</p>
+    </td>
+  </tr>
+
+  <!-- CTA BLOCK -->
+  <tr>
+    <td style="padding:0 0 20px 0;">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td style="background:${bg};border-left:4px solid ${crimson};border-radius:0 4px 4px 0;padding:16px 20px;">
+            <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;">Seu link direto</div>
+            <div style="font-size:15px;font-weight:700;color:${navy};margin-bottom:10px;">Assinatura de e-mail · ${emp.name}</div>
+            <div style="font-size:13px;color:${black};margin-bottom:14px;">
+              1. Acesse o link abaixo<br>
+              2. Preencha cargo, departamento e telefone<br>
+              3. Clique <strong style="color:${navy};">"Copiar assinatura"</strong> e cole no Outlook ou Gmail
+            </div>
+            <a href="${link}" style="display:inline-block;background:${crimson};color:#fff;font-weight:700;font-size:12px;letter-spacing:0.06em;text-decoration:none;padding:10px 20px;border-radius:2px;">Configurar minha assinatura →</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- PLAIN LINK -->
+  <tr>
+    <td style="padding:0 0 24px 0;font-size:12px;color:${gray};">
+      Link direto: <a href="${link}" style="color:${crimson};text-decoration:none;font-weight:700;word-break:break-all;">${link}</a>
+    </td>
+  </tr>
+
+  <!-- CLOSING -->
+  <tr>
+    <td style="padding:0 0 6px 0;">
+      <p style="margin:0 0 4px 0;font-size:13px;">Dúvidas? Responda este e-mail.</p>
+      <p style="margin:0 0 28px 0;font-size:13px;">Atenciosamente,</p>
+    </td>
+  </tr>
+
+  <!-- SENDER SIGNATURE -->
+  <tr>
+    <td style="border-top:1px solid ${divider};padding-top:18px;">
+      <div style="font-size:14px;font-weight:700;color:${navy};">${sender.name}</div>
+      <div style="font-size:12px;color:${black};margin-top:2px;">${sender.role}</div>
+      <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:8px 0 4px;">More than security</div>
+      <div style="font-size:11px;color:${black};line-height:1.6;">
+        <span style="color:${gray};">E</span>&nbsp;contato@gaadvising.com&nbsp;&nbsp;
+        <span style="color:${gray};">W</span>&nbsp;www.gaadvising.com
+      </div>
+    </td>
+  </tr>
+
+</table>`;
+}
+
+function buildPlainText(emp, sender) {
   const link = SIG_BASE + anchor(emp.email);
   return `${firstName(emp.name)},
 
-Acesse seu link direto para configurar sua assinatura de e-mail Global Advising:
+O sistema de marca Global Advising 2026 está disponível. Configure sua assinatura de e-mail agora:
 
 ${link}
 
@@ -215,7 +286,7 @@ function mailtoHref(emp) {
   const s = getSender();
   return 'mailto:' + emp.email
     + '?subject=' + encodeURIComponent(buildSubject())
-    + '&body='    + encodeURIComponent(buildBody(emp, s));
+    + '&body='    + encodeURIComponent(buildPlainText(emp, s));
 }
 
 let sentSet = new Set(JSON.parse(localStorage.getItem('ga-sent') || '[]'));
@@ -247,17 +318,9 @@ function refreshPreview(i) {
   if (!body.classList.contains('open')) return;
   const emp = EMPLOYEES[i];
   const s   = getSender();
-  const txt = buildBody(emp, s);
-  const link = SIG_BASE + anchor(emp.email);
-  // highlight link in preview
-  const escaped = txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const highlighted = escaped.replace(
-    link.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),
-    `<span class="ep-link">${link}</span>`
-  );
-  body.querySelector('.ep-body').innerHTML = highlighted;
-  body.querySelector('.ep-subject .subj-text').textContent = buildSubject();
-  // update mailto
+  body.querySelector('.ep-rendered').innerHTML = buildHtmlEmail(emp, s);
+  body.querySelector('.ep-meta-row.subj .val').textContent = buildSubject();
+  body.querySelector('.ep-meta-row.para .val').textContent = emp.email;
   const btn = document.querySelector(`.email-row[data-idx="${i}"] .btn-mailto`);
   if (btn) btn.href = mailtoHref(emp);
 }
@@ -288,8 +351,11 @@ function renderList() {
       </div>
       <div class="row-body" id="body-${i}">
         <div class="email-preview">
-          <div class="ep-subject"><span>Assunto:</span><span class="subj-text">${buildSubject()}</span></div>
-          <div class="ep-body"></div>
+          <div class="ep-meta">
+            <div class="ep-meta-row para"><span class="lbl">Para:</span><span class="val">${emp.email}</span></div>
+            <div class="ep-meta-row subj"><span class="lbl">Assunto:</span><span class="val">${buildSubject()}</span></div>
+          </div>
+          <div class="ep-rendered"></div>
         </div>
       </div>`;
     list.appendChild(row);
@@ -298,13 +364,21 @@ function renderList() {
 }
 
 async function copyEmail(i) {
-  const emp = EMPLOYEES[i];
-  const s   = getSender();
-  const text = 'Para: ' + emp.email + '\nAssunto: ' + buildSubject() + '\n\n' + buildBody(emp, s);
+  const emp  = EMPLOYEES[i];
+  const s    = getSender();
+  const html = buildHtmlEmail(emp, s);
+  const plain = buildPlainText(emp, s);
   try {
-    await navigator.clipboard.writeText(text);
+    if (window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html':  new Blob([html],  {type:'text/html'}),
+        'text/plain': new Blob([plain], {type:'text/plain'}),
+      })]);
+    } else {
+      await navigator.clipboard.writeText(plain);
+    }
     markSent(i);
-    toast('E-mail de ' + firstName(emp.name) + ' copiado');
+    toast('E-mail de ' + firstName(emp.name) + ' copiado — cole no Outlook ou Gmail');
   } catch { toast('Falha ao copiar'); }
 }
 

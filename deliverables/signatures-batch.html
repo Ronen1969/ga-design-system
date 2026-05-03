@@ -18,7 +18,7 @@
     display: flex; align-items: center; justify-content: space-between;
     height: 56px; position: sticky; top: 0; z-index: 50;
   }
-  .site-header img { height: 28px; }
+  .site-header img { height: 36px; }
   .site-header .strap { font-size: 10px; font-weight: 700; color: var(--ga-gray-700); letter-spacing: 0.20em; text-transform: uppercase; }
 
   /* ── PAGE HERO ── */
@@ -178,6 +178,37 @@
   /* hidden */
   .card.hidden { display: none; }
 
+  /* ── SINGLE VIEW ── */
+  .sv-back { margin-bottom: 20px; }
+  .sv-back a { font-size: 12px; font-weight: 700; color: var(--ga-navy-500); text-decoration: none; letter-spacing: 0.04em; }
+  .sv-back a:hover { color: var(--ga-crimson-500); }
+  .sv-card { background: #fff; border: 1px solid var(--ga-navy-100); border-radius: 6px; overflow: hidden; }
+  .sv-head { background: var(--ga-navy-500); padding: 28px 32px; }
+  .sv-tag { font-size: 10px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 10px; }
+  .sv-name { font-family: Corbel, "Lato", sans-serif; font-size: 28px; font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 4px; }
+  .sv-email { font-family: var(--ga-font-mono); font-size: 12px; color: rgba(255,255,255,0.6); }
+  .sv-body { padding: 28px 32px; }
+  .sv-fields { display: grid; grid-template-columns: 320px 1fr; gap: 32px; }
+  .sv-col { display: flex; flex-direction: column; gap: 14px; }
+  .sv-field-group { display: flex; flex-direction: column; gap: 4px; }
+  .sv-label { font-size: 10px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.12em; text-transform: uppercase; }
+  .sv-input { font-family: Arial, sans-serif; font-size: 14px; padding: 9px 12px; border-radius: 2px; border: 1px solid var(--ga-navy-100); color: var(--ga-black); outline: none; }
+  .sv-input:focus { border-color: var(--ga-crimson-500); box-shadow: 0 0 0 2px rgba(146,21,58,0.12); }
+  .sv-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .sv-btn-pri { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; padding: 10px 18px; border-radius: 2px; border: none; background: var(--ga-crimson-500); color: #fff; cursor: pointer; }
+  .sv-btn-pri:hover { background: var(--ga-crimson-700); }
+  .sv-btn-sec { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; padding: 10px 14px; border-radius: 2px; border: none; background: var(--ga-navy-500); color: #fff; cursor: pointer; }
+  .sv-btn-sec:hover { background: var(--ga-navy-700); }
+  .sv-btn-ghost { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; padding: 10px 14px; border-radius: 2px; border: 1px solid var(--ga-navy-100); background: #fff; color: var(--ga-navy-500); cursor: pointer; }
+  .sv-btn-ghost:hover { background: var(--ga-navy-50); }
+  .sv-hint { font-size: 11px; color: var(--ga-gray-700); line-height: 1.5; margin-top: 4px; }
+  .sv-preview-col { display: flex; flex-direction: column; gap: 8px; }
+  .sv-preview-label { font-size: 10px; font-weight: 700; color: var(--ga-crimson-500); letter-spacing: 0.14em; text-transform: uppercase; }
+  .sv-preview-frame { background: #f6f8fa; border: 1px solid var(--ga-navy-100); border-radius: 4px; padding: 20px; }
+  .sv-preview-from { font-size: 12px; color: var(--ga-gray-700); margin-bottom: 14px; }
+  .sv-preview-from b { color: var(--ga-black); }
+  @media (max-width: 700px) { .sv-fields { grid-template-columns: 1fr; } }
+
   @media (max-width: 900px) {
     .grid { grid-template-columns: repeat(2, 1fr); padding: 16px 20px 40px; }
     .hero, .bar, .bulk-row { padding-left: 20px; padding-right: 20px; }
@@ -196,7 +227,7 @@
 </header>
 
 <!-- HERO -->
-<div class="hero">
+<div class="hero" id="batch-hero">
   <div class="hero-inner">
     <div class="hero-tag">Onboarding · 2026</div>
     <h1>Assinaturas de E-mail — Equipe GA</h1>
@@ -205,7 +236,7 @@
 </div>
 
 <!-- TOOLBAR -->
-<div class="bar">
+<div class="bar" id="batch-bar">
   <div class="bar-search">
     <input type="search" id="search" placeholder="Buscar por nome ou e-mail…" oninput="filterCards()">
   </div>
@@ -213,7 +244,7 @@
 </div>
 
 <!-- BULK ROLE FILL -->
-<div class="bulk-row">
+<div class="bulk-row" id="batch-bulk">
   <span class="bulk-label">Preencher cargo em massa:</span>
   <input class="bulk-input" id="bulk-role"  placeholder="ex: Consultor de Segurança">
   <input class="bulk-input" id="bulk-dept"  placeholder="ex: Operações">
@@ -223,6 +254,9 @@
 
 <!-- GRID -->
 <div class="grid" id="grid"></div>
+
+<!-- SINGLE-PERSON VIEW (shown when URL has #anchor) -->
+<div id="single-wrap" style="display:none; max-width:900px; margin:0 auto; padding:24px 40px 60px;"></div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal" onclick="closeModal(event)">
@@ -294,7 +328,7 @@ function buildSig(d) {
   return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;color:${black};">
   <tr>
     <td style="padding:0 18px 0 0;border-right:2px solid ${crimson};vertical-align:top;">
-      <img src="${LOGO_URL}" width="120" alt="Global Advising" style="display:block;border:0;">
+      <img src="${LOGO_URL}" width="180" alt="Global Advising" style="display:block;border:0;">
     </td>
     <td style="padding:0 0 0 18px;vertical-align:top;">
       <div style="font-size:14px;font-weight:700;color:${navy};letter-spacing:0.02em;">${d.name}</div>
@@ -470,8 +504,129 @@ function toast(msg) {
   t._tid = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
+/* ── SINGLE-PERSON VIEW ── */
+function initSingleView() {
+  const hash = location.hash.slice(1);
+  if (!hash) return;
+  const emp = EMPLOYEES.find(e => e.email.split('@')[0] === hash);
+  if (!emp) return;
+
+  // Hide batch UI
+  ['#batch-hero','#batch-bar','#batch-bulk','.grid','#modal'].forEach(sel => {
+    const el = document.querySelector(sel);
+    if (el) el.style.display = 'none';
+  });
+
+  // Build single view
+  const wrap = document.getElementById('single-wrap');
+  wrap.style.display = 'block';
+
+  wrap.innerHTML = `
+    <div class="sv-back"><a href="signatures-batch.html">← Ver painel completo da equipe</a></div>
+    <div class="sv-card">
+      <div class="sv-head">
+        <div class="sv-tag">Sua assinatura de e-mail · Global Advising 2026</div>
+        <div class="sv-name">${emp.name}</div>
+        <div class="sv-email">${emp.email}</div>
+      </div>
+      <div class="sv-body">
+        <div class="sv-fields">
+          <div class="sv-col">
+            <div class="sv-field-group">
+              <label class="sv-label">Cargo</label>
+              <input class="sv-input" id="sv-role"  placeholder="ex: Consultor Sênior" oninput="svRender()">
+            </div>
+            <div class="sv-field-group">
+              <label class="sv-label">Departamento</label>
+              <input class="sv-input" id="sv-dept"  placeholder="ex: Inteligência &amp; Riscos" oninput="svRender()">
+            </div>
+            <div class="sv-field-group">
+              <label class="sv-label">Telefone</label>
+              <input class="sv-input" id="sv-phone" placeholder="ex: +55 11 9 0000-0000" oninput="svRender()">
+            </div>
+            <div class="sv-actions">
+              <button class="sv-btn-pri" onclick="svCopy()">Copiar assinatura</button>
+              <button class="sv-btn-sec" onclick="svCopyHtml()">Copiar HTML</button>
+              <button class="sv-btn-ghost" onclick="svDownload()">Baixar .html</button>
+            </div>
+            <div class="sv-hint">Cole diretamente nas configurações de assinatura do Outlook ou Gmail. Leva menos de 2 minutos.</div>
+          </div>
+          <div class="sv-preview-col">
+            <div class="sv-preview-label">Pré-visualização</div>
+            <div class="sv-preview-frame">
+              <div class="sv-preview-from">De: <b>${emp.name}</b> &lt;${emp.email}&gt;</div>
+              <div id="sv-render"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  window._svEmp = emp;
+  svRender();
+}
+
+function svRender() {
+  const emp = window._svEmp;
+  if (!emp) return;
+  const d = {
+    name:  emp.name,
+    email: emp.email,
+    role:  (document.getElementById('sv-role')  || {}).value || '',
+    dept:  (document.getElementById('sv-dept')  || {}).value || '',
+    phone: (document.getElementById('sv-phone') || {}).value || '',
+  };
+  const html = buildSig(d);
+  const render = document.getElementById('sv-render');
+  if (render) render.innerHTML = html;
+  if (window._svHtmlEl) window._svHtmlEl.textContent = html;
+}
+
+async function svCopy() {
+  const emp = window._svEmp;
+  const d = { name: emp.name, email: emp.email,
+    role:  document.getElementById('sv-role').value,
+    dept:  document.getElementById('sv-dept').value,
+    phone: document.getElementById('sv-phone').value };
+  const html = buildSig(d);
+  try {
+    if (window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], {type:'text/html'}),
+        'text/plain': new Blob([emp.name + '\n' + d.role + '\n' + emp.email], {type:'text/plain'})
+      })]);
+    } else { await navigator.clipboard.writeText(html); }
+    toast('✓ Assinatura copiada — cole no seu cliente de e-mail');
+  } catch { toast('Falha ao copiar — tente o botão "Copiar HTML"'); }
+}
+
+async function svCopyHtml() {
+  const emp = window._svEmp;
+  const d = { name: emp.name, email: emp.email,
+    role:  document.getElementById('sv-role').value,
+    dept:  document.getElementById('sv-dept').value,
+    phone: document.getElementById('sv-phone').value };
+  try { await navigator.clipboard.writeText(buildSig(d)); toast('HTML copiado'); }
+  catch { toast('Falha ao copiar'); }
+}
+
+function svDownload() {
+  const emp = window._svEmp;
+  const d = { name: emp.name, email: emp.email,
+    role:  document.getElementById('sv-role').value,
+    dept:  document.getElementById('sv-dept').value,
+    phone: document.getElementById('sv-phone').value };
+  const html = '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>' + buildSig(d) + '</body></html>';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
+  a.download = emp.email.split('@')[0] + '-assinatura.html';
+  a.click();
+  toast('Arquivo baixado');
+}
+
 /* ── INIT ── */
 renderGrid();
+initSingleView();
 </script>
 
 </body>
