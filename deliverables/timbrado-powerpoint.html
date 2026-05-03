@@ -114,8 +114,26 @@
   </div>
 </div>
 <script>
-function downloadHtml() {
+async function downloadHtml() {
+  async function toBase64(src) {
+    try {
+      var r = await fetch(src);
+      var b = await r.blob();
+      return await new Promise(function(res) {
+        var fr = new FileReader();
+        fr.onload = function(){ res(fr.result); };
+        fr.readAsDataURL(b);
+      });
+    } catch(e) { return null; }
+  }
   var html = document.documentElement.outerHTML;
+  var imgs = document.querySelectorAll('img');
+  for (var i = 0; i < imgs.length; i++) {
+    var attr = imgs[i].getAttribute('src');
+    if (!attr) continue;
+    var b64 = await toBase64(imgs[i].src);
+    if (b64) html = html.split(attr).join(b64);
+  }
   var blob = new Blob([html], { type: 'text/html' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
