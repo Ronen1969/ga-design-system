@@ -371,7 +371,7 @@
       </div>
     </div>
 
-    <a class="d-card" href="deliverables/como-usar.html" style="border-top: 3px solid var(--ga-crimson-500);">
+    <div class="d-card" onclick="location.href='deliverables/como-usar.html'" style="cursor:pointer;border-top:3px solid var(--ga-crimson-500);">
       <div class="d-thumb" style="background:var(--ga-crimson-100);">
         <span class="num" style="color:var(--ga-crimson-500);">↗</span>
         <div style="text-align:center;">
@@ -389,9 +389,13 @@
         <div class="d-cap" style="color:var(--ga-crimson-500);">Guia de Onboarding</div>
         <h3 class="d-name">Como Usar</h3>
         <p class="d-desc">Uma página, imprimível. Passos para assinatura, relatórios e apresentações — mais referência rápida de marca.</p>
-        <span class="d-open" style="color:var(--ga-crimson-500);">Abrir &amp; Imprimir →</span>
+        <div class="d-actions">
+          <a href="deliverables/como-usar.html" class="d-open" style="color:var(--ga-crimson-500);" onclick="event.stopPropagation()">Abrir →</a>
+          <a href="deliverables/como-usar.html" download="guia-de-marca-global-advising.doc" class="d-download" onclick="event.stopPropagation()">Baixar .doc ↓</a>
+          <a href="deliverables/como-usar.html" class="d-download" style="color:var(--ga-navy-500);" onclick="event.stopPropagation();setTimeout(()=>window.open('deliverables/como-usar.html'),100)" title="Abre a página — clique em Salvar como PDF">Baixar PDF ↓</a>
+        </div>
       </div>
-    </a>
+    </div>
 
     <a class="d-card" href="deliverables/mail-signature.html">
       <div class="d-thumb">
