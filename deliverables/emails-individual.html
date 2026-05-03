@@ -94,6 +94,28 @@
 
   .email-row.sent { border-color: var(--ga-success); }
 
+  .paste-banner {
+    display: none;
+    margin: 0 18px 14px;
+    background: #FFF8E1;
+    border: 1px solid #F5C842;
+    border-left: 4px solid #F5C842;
+    border-radius: 0 4px 4px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #5C4200;
+    line-height: 1.5;
+  }
+  .paste-banner kbd {
+    background: #002341;
+    color: #fff;
+    font-family: var(--ga-font-mono);
+    font-size: 11px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+
   @media (max-width: 640px) {
     .hero, .toolbar, .list { padding-left: 16px; padding-right: 16px; }
     .email-preview { padding-left: 16px; }
@@ -187,14 +209,14 @@ function getSender() {
 /* ── BRANDED HTML EMAIL ── */
 function buildHtmlEmail(emp, sender) {
   const navy = '#002341', crimson = '#92153A', black = '#1A1A1A', gray = '#4A4B4D', divider = '#BFC8CF', bg = '#EAEDEF';
-  const link = SIG_BASE + anchor(emp.email);
+  const link    = SIG_BASE + anchor(emp.email);
   const logoUrl = BASE_URL + '/assets/logo-global-advising.png';
   return `<table cellpadding="0" cellspacing="0" border="0" width="600" style="font-family:Arial,Helvetica,sans-serif;color:${black};font-size:14px;line-height:1.6;max-width:600px;">
 
   <!-- HEADER -->
   <tr>
     <td style="padding:0 0 16px 0;border-bottom:2px solid ${crimson};">
-      <img src="${logoUrl}" width="180" alt="Global Advising" style="display:block;border:0;">
+      <img src="${logoUrl}" width="160" alt="Global Advising" style="display:block;border:0;">
     </td>
   </tr>
 
@@ -202,34 +224,61 @@ function buildHtmlEmail(emp, sender) {
   <tr>
     <td style="padding:24px 0 0 0;">
       <p style="margin:0 0 14px 0;">${firstName(emp.name)},</p>
-      <p style="margin:0 0 20px 0;">O sistema de marca <strong style="color:${navy};">Global Advising 2026</strong> está disponível. Configure sua assinatura de e-mail agora — leva menos de 3 minutos.</p>
+      <p style="margin:0 0 20px 0;">O sistema de marca <strong style="color:${navy};">Global Advising 2026</strong> está disponível. Todos os recursos abaixo já estão configurados com a identidade visual correta — basta acessar e usar.</p>
     </td>
   </tr>
 
-  <!-- CTA BLOCK -->
+  <!-- ASSINATURA CTA -->
   <tr>
-    <td style="padding:0 0 20px 0;">
+    <td style="padding:0 0 12px 0;">
       <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           <td style="background:${bg};border-left:4px solid ${crimson};border-radius:0 4px 4px 0;padding:16px 20px;">
-            <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;">Seu link direto</div>
-            <div style="font-size:15px;font-weight:700;color:${navy};margin-bottom:10px;">Assinatura de e-mail · ${emp.name}</div>
+            <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;">01 · Prioridade imediata</div>
+            <div style="font-size:15px;font-weight:700;color:${navy};margin-bottom:8px;">Assinatura de E-mail · ${emp.name}</div>
             <div style="font-size:13px;color:${black};margin-bottom:14px;">
               1. Acesse o link abaixo<br>
               2. Preencha cargo, departamento e telefone<br>
               3. Clique <strong style="color:${navy};">"Copiar assinatura"</strong> e cole no Outlook ou Gmail
             </div>
             <a href="${link}" style="display:inline-block;background:${crimson};color:#fff;font-weight:700;font-size:12px;letter-spacing:0.06em;text-decoration:none;padding:10px 20px;border-radius:2px;">Configurar minha assinatura →</a>
+            <div style="margin-top:10px;font-size:11px;color:${gray};word-break:break-all;">${link}</div>
           </td>
         </tr>
       </table>
     </td>
   </tr>
 
-  <!-- PLAIN LINK -->
+  <!-- TEMPLATES -->
   <tr>
-    <td style="padding:0 0 24px 0;font-size:12px;color:${gray};">
-      Link direto: <a href="${link}" style="color:${crimson};text-decoration:none;font-weight:700;word-break:break-all;">${link}</a>
+    <td style="padding:0 0 20px 0;">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td style="background:#F8F9FA;border-left:4px solid ${navy};border-radius:0 4px 4px 0;padding:16px 20px;">
+            <div style="font-size:10px;font-weight:700;color:${navy};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;">02 · Templates de Marca</div>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td style="padding:7px 0;border-bottom:1px solid ${divider};">
+                  <a href="${BASE_URL}/deliverables/timbrado-word.html" style="color:${navy};font-weight:700;font-size:13px;text-decoration:none;">Letterhead Word →</a>
+                  <span style="font-size:12px;color:${gray};">&nbsp;&nbsp;relatórios e documentos a clientes</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:7px 0;border-bottom:1px solid ${divider};">
+                  <a href="${BASE_URL}/deliverables/timbrado-powerpoint.html" style="color:${navy};font-weight:700;font-size:13px;text-decoration:none;">Template PowerPoint →</a>
+                  <span style="font-size:12px;color:${gray};">&nbsp;&nbsp;decks e apresentações executivas</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:7px 0;">
+                  <a href="${BASE_URL}/deliverables/como-usar.html" style="color:${navy};font-weight:700;font-size:13px;text-decoration:none;">Guia de Marca →</a>
+                  <span style="font-size:12px;color:${gray};">&nbsp;&nbsp;referência rápida — imprimir ou salvar como PDF</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 
@@ -237,20 +286,29 @@ function buildHtmlEmail(emp, sender) {
   <tr>
     <td style="padding:0 0 6px 0;">
       <p style="margin:0 0 4px 0;font-size:13px;">Dúvidas? Responda este e-mail.</p>
-      <p style="margin:0 0 28px 0;font-size:13px;">Atenciosamente,</p>
+      <p style="margin:0 0 24px 0;font-size:13px;">Atenciosamente,</p>
     </td>
   </tr>
 
-  <!-- SENDER SIGNATURE -->
+  <!-- SENDER SIGNATURE — padrão GA -->
   <tr>
-    <td style="border-top:1px solid ${divider};padding-top:18px;">
-      <div style="font-size:14px;font-weight:700;color:${navy};">${sender.name}</div>
-      <div style="font-size:12px;color:${black};margin-top:2px;">${sender.role}</div>
-      <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:8px 0 4px;">More than security</div>
-      <div style="font-size:11px;color:${black};line-height:1.6;">
-        <span style="color:${gray};">E</span>&nbsp;contato@gaadvising.com&nbsp;&nbsp;
-        <span style="color:${gray};">W</span>&nbsp;www.gaadvising.com
-      </div>
+    <td style="padding-top:18px;border-top:1px solid ${divider};">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="padding:0 14px 0 0;border-right:2px solid ${crimson};vertical-align:middle;">
+            <img src="${logoUrl}" width="130" height="49" alt="Global Advising" style="display:block;border:0;">
+          </td>
+          <td style="padding:0 0 0 14px;vertical-align:middle;font-family:Arial,Helvetica,sans-serif;">
+            <div style="font-size:15px;font-weight:700;color:${navy};">${sender.name}</div>
+            <div style="font-size:12px;color:${black};margin-top:2px;">${sender.role}</div>
+            <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:6px 0 4px;">More than security</div>
+            <div style="font-size:11px;color:${black};line-height:1.55;">
+              <span style="color:${gray};">E</span>&nbsp;<a href="mailto:contato@gaadvising.com" style="color:${crimson};text-decoration:none;font-weight:700;">contato@gaadvising.com</a><br>
+              <span style="color:${gray};">W</span>&nbsp;<a href="https://www.gaadvising.com" style="color:${navy};text-decoration:none;font-weight:700;">www.gaadvising.com</a>
+            </div>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 
@@ -261,16 +319,32 @@ function buildPlainText(emp, sender) {
   const link = SIG_BASE + anchor(emp.email);
   return `${firstName(emp.name)},
 
-O sistema de marca Global Advising 2026 está disponível. Configure sua assinatura de e-mail agora:
+O sistema de marca Global Advising 2026 está disponível. Todos os recursos abaixo já estão configurados com a identidade visual correta.
 
-${link}
+─────────────────────────────────────
+01 · ASSINATURA DE E-MAIL (prioridade)
+─────────────────────────────────────
+Seu link direto: ${link}
 
 Passos:
-1. Preencha cargo, departamento e telefone
-2. Clique "Copiar assinatura"
-3. Cole nas configurações do Outlook ou Gmail
+1. Acesse o link
+2. Preencha cargo, departamento e telefone
+3. Clique "Copiar assinatura" e cole no Outlook ou Gmail
 
-Leva menos de 3 minutos. Dúvidas? Responda este e-mail.
+─────────────────────────────────────
+02 · TEMPLATES DE MARCA
+─────────────────────────────────────
+Letterhead Word (relatórios a clientes):
+${BASE_URL}/deliverables/timbrado-word.html
+
+Template PowerPoint (decks e apresentações):
+${BASE_URL}/deliverables/timbrado-powerpoint.html
+
+Guia de Marca (referência rápida / PDF):
+${BASE_URL}/deliverables/como-usar.html
+
+─────────────────────────────────────
+Dúvidas? Responda este e-mail.
 
 Atenciosamente,
 ${sender.name}
@@ -298,20 +372,35 @@ async function openEmailClient(i) {
       htmlCopied = true;
     } else {
       await navigator.clipboard.writeText(plain);
+      htmlCopied = true;
     }
   } catch(e) {}
 
-  // Always include plain-text body so the email is never blank
+  // Abre Outlook com Para + Assunto apenas — corpo fica em branco para colar
   const a = document.createElement('a');
-  a.href = 'mailto:' + emp.email
-    + '?subject=' + encodeURIComponent(buildSubject())
-    + '&body='    + encodeURIComponent(plain);
+  a.href = 'mailto:' + emp.email + '?subject=' + encodeURIComponent(buildSubject());
   a.click();
 
   markSent(i);
-  toast(htmlCopied
-    ? firstName(emp.name) + ': Outlook aberto — Cole Ctrl+V para versão com design'
-    : firstName(emp.name) + ': Outlook aberto com conteúdo em texto');
+  showPasteInstruction(i, htmlCopied);
+}
+
+function showPasteInstruction(i, htmlCopied) {
+  // Mostra banner de instrução dentro da linha
+  const row = document.querySelector(`.email-row[data-idx="${i}"]`);
+  if (!row) return;
+  let banner = row.querySelector('.paste-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.className = 'paste-banner';
+    row.appendChild(banner);
+  }
+  banner.innerHTML = htmlCopied
+    ? '<strong>E-mail com design copiado!</strong> No Outlook: clique no corpo do e-mail e pressione <kbd>Ctrl+V</kbd> para colar o e-mail formatado.'
+    : '<strong>Outlook aberto.</strong> Cole o conteúdo com <kbd>Ctrl+V</kbd> no corpo do e-mail.';
+  banner.style.display = 'block';
+  clearTimeout(banner._tid);
+  banner._tid = setTimeout(() => { banner.style.display = 'none'; }, 8000);
 }
 
 let sentSet = new Set(JSON.parse(localStorage.getItem('ga-sent') || '[]'));
@@ -367,8 +456,8 @@ function renderList() {
         </div>
         <div class="row-actions">
           ${isSent ? '<span class="row-sent">✓ Enviado</span>' : '<span class="row-sent" style="display:none">✓ Enviado</span>'}
-          <button class="btn btn-mailto" onclick="event.stopPropagation();openEmailClient(${i})">Abrir no e-mail ↗</button>
-          <button class="btn btn-copy" onclick="event.stopPropagation();copyEmail(${i})">Copiar</button>
+          <button class="btn btn-mailto" onclick="event.stopPropagation();openEmailClient(${i})" title="Copia o e-mail formatado e abre o Outlook — cole com Ctrl+V">Copiar + Abrir Outlook ↗</button>
+          <button class="btn btn-copy" onclick="event.stopPropagation();copyEmail(${i})" title="Copia o HTML para colar manualmente">Só copiar</button>
           <button class="btn btn-toggle">Ver ▾</button>
         </div>
       </div>
