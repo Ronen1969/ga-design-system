@@ -134,11 +134,11 @@
   <div class="hero-inner">
     <div class="hero-tag">Rollout · 2026</div>
     <h1>E-mails Individuais — Equipe GA</h1>
-    <p class="hero-lead">Um e-mail personalizado por colaborador, com link direto para a assinatura de cada um. Clique <strong style="color:#fff;">Abrir no e-mail</strong> para abrir no Outlook/Mail com tudo preenchido, ou <strong style="color:#fff;">Copiar</strong> para colar manualmente.</p>
+    <p class="hero-lead">Um e-mail personalizado por colaborador. Clique <strong style="color:#fff;">Abrir no Outlook</strong> — o arquivo .eml é baixado e abre diretamente no Outlook com destinatário, assunto e e-mail formatado prontos. Basta clicar Enviar.</p>
     <div class="hero-steps">
       <div class="hero-step"><span class="n">1</span><span class="t">Preencha seu nome e cargo abaixo</span></div>
-      <div class="hero-step"><span class="n">2</span><span class="t">Clique <b style="color:#fff;">Abrir no e-mail</b> em cada linha</span></div>
-      <div class="hero-step"><span class="n">3</span><span class="t">Envie — o destinatário e o texto já estão prontos</span></div>
+      <div class="hero-step"><span class="n">2</span><span class="t">Clique <b style="color:#fff;">Abrir no Outlook</b> em cada linha</span></div>
+      <div class="hero-step"><span class="n">3</span><span class="t">Abra o arquivo .eml baixado e clique <b style="color:#fff;">Enviar</b></span></div>
     </div>
   </div>
 </div>
@@ -407,38 +407,63 @@ function buildSubject() {
   return 'Global Advising — Nova identidade visual: kit completo para a equipe';
 }
 
-async function openEmailClient(i) {
+function openEmailClient(i) {
   const emp   = EMPLOYEES[i];
   const s     = getSender();
   const html  = buildHtmlEmail(emp, s);
   const plain = buildPlainText(emp, s);
+  const subject = buildSubject();
 
-  let htmlCopied = false;
-  try {
-    if (window.ClipboardItem) {
-      await navigator.clipboard.write([new ClipboardItem({
-        'text/html':  new Blob([html],  { type: 'text/html' }),
-        'text/plain': new Blob([plain], { type: 'text/plain' }),
-      })]);
-      htmlCopied = true;
-    } else {
-      await navigator.clipboard.writeText(plain);
-      htmlCopied = true;
-    }
-  } catch(e) {}
+  // Encode UTF-8 string to base64 with 76-char line wrapping (MIME spec)
+  function b64(str) {
+    const bytes = new TextEncoder().encode(str);
+    let binary = '';
+    bytes.forEach(function(b) { binary += String.fromCharCode(b); });
+    return btoa(binary).match(/.{1,76}/g).join('\r\n');
+  }
 
-  // Abre Outlook com Para + Assunto apenas — corpo fica em branco para colar
-  const a = document.createElement('a');
-  a.href = 'mailto:' + emp.email + '?subject=' + encodeURIComponent(buildSubject());
-  a.click();
+  const senderEmail = (EMPLOYEES.find(function(e){ return e.name === s.name; }) || {}).email || 'ronen@gaadvising.com';
+  const boundary = '----=_GA_' + Date.now();
+
+  const eml = [
+    'MIME-Version: 1.0',
+    'Date: ' + new Date().toUTCString(),
+    'From: ' + s.name + ' <' + senderEmail + '>',
+    'To: ' + emp.name + ' <' + emp.email + '>',
+    'Subject: =?UTF-8?B?' + btoa(unescape(encodeURIComponent(subject))) + '?=',
+    'X-Unsent: 1',
+    'Content-Type: multipart/alternative; boundary="' + boundary + '"',
+    '',
+    '--' + boundary,
+    'Content-Type: text/plain; charset="UTF-8"',
+    'Content-Transfer-Encoding: base64',
+    '',
+    b64(plain),
+    '',
+    '--' + boundary,
+    'Content-Type: text/html; charset="UTF-8"',
+    'Content-Transfer-Encoding: base64',
+    '',
+    b64(html),
+    '',
+    '--' + boundary + '--'
+  ].join('\r\n');
+
+  const blob = new Blob([eml], { type: 'message/rfc822' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = 'email-' + anchor(emp.email) + '.eml';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
 
   markSent(i);
-  showPasteInstruction(i, htmlCopied);
+  showEmlInstruction(i);
 }
 
-function showPasteInstruction(i, htmlCopied) {
-  // Mostra banner de instrução dentro da linha
-  const row = document.querySelector(`.email-row[data-idx="${i}"]`);
+function showEmlInstruction(i) {
+  const row = document.querySelector('.email-row[data-idx="' + i + '"]');
   if (!row) return;
   let banner = row.querySelector('.paste-banner');
   if (!banner) {
@@ -446,12 +471,10 @@ function showPasteInstruction(i, htmlCopied) {
     banner.className = 'paste-banner';
     row.appendChild(banner);
   }
-  banner.innerHTML = htmlCopied
-    ? '<strong>E-mail com design copiado!</strong> No Outlook: clique no corpo do e-mail e pressione <kbd>Ctrl+V</kbd> para colar o e-mail formatado.'
-    : '<strong>Outlook aberto.</strong> Cole o conteúdo com <kbd>Ctrl+V</kbd> no corpo do e-mail.';
+  banner.innerHTML = '&#128206; <strong>Arquivo .eml baixado.</strong> Abra-o para enviar o e-mail formatado diretamente pelo Outlook.';
   banner.style.display = 'block';
   clearTimeout(banner._tid);
-  banner._tid = setTimeout(() => { banner.style.display = 'none'; }, 8000);
+  banner._tid = setTimeout(function(){ banner.style.display = 'none'; }, 10000);
 }
 
 let sentSet = new Set(JSON.parse(localStorage.getItem('ga-sent') || '[]'));
@@ -507,7 +530,7 @@ function renderList() {
         </div>
         <div class="row-actions">
           ${isSent ? '<span class="row-sent">✓ Enviado</span>' : '<span class="row-sent" style="display:none">✓ Enviado</span>'}
-          <button class="btn btn-mailto" onclick="event.stopPropagation();openEmailClient(${i})" title="Copia o e-mail formatado e abre o Outlook — cole com Ctrl+V">Copiar + Abrir Outlook ↗</button>
+          <button class="btn btn-mailto" onclick="event.stopPropagation();openEmailClient(${i})" title="Baixa um .eml — abra-o no Outlook para enviar o e-mail com design completo">Abrir no Outlook ↓</button>
           <button class="btn btn-copy" onclick="event.stopPropagation();copyEmail(${i})" title="Copia o HTML para colar manualmente">Só copiar</button>
           <button class="btn btn-toggle">Ver ▾</button>
         </div>
