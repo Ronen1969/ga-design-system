@@ -127,6 +127,15 @@ async function downloadHtml() {
     } catch(e) { return null; }
   }
   var html = document.documentElement.outerHTML;
+  // Inline external CSS so it works when opened locally
+  var links = document.querySelectorAll('link[rel="stylesheet"]:not([href*="fonts.googleapis"])');
+  for (var j = 0; j < links.length; j++) {
+    try {
+      var cssText = await (await fetch(links[j].href)).text();
+      html = html.replace(links[j].outerHTML, '<style>' + cssText + '</style>');
+    } catch(e) {}
+  }
+  // Embed images as base64
   var imgs = document.querySelectorAll('img');
   for (var i = 0; i < imgs.length; i++) {
     var attr = imgs[i].getAttribute('src');
