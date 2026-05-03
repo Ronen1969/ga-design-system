@@ -282,11 +282,25 @@ function buildSubject() {
   return 'Ação necessária: configure sua assinatura de e-mail GA';
 }
 
-function mailtoHref(emp) {
-  const s = getSender();
-  return 'mailto:' + emp.email
-    + '?subject=' + encodeURIComponent(buildSubject())
-    + '&body='    + encodeURIComponent(buildPlainText(emp, s));
+async function openEmailClient(i) {
+  const emp   = EMPLOYEES[i];
+  const s     = getSender();
+  const html  = buildHtmlEmail(emp, s);
+  const plain = buildPlainText(emp, s);
+  try {
+    if (window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html':  new Blob([html],  { type: 'text/html' }),
+        'text/plain': new Blob([plain], { type: 'text/plain' }),
+      })]);
+    } else {
+      await navigator.clipboard.writeText(plain);
+    }
+  } catch(e) {}
+  window.location.href = 'mailto:' + emp.email
+    + '?subject=' + encodeURIComponent(buildSubject());
+  markSent(i);
+  toast('Conteúdo copiado — cole com Ctrl+V no corpo do e-mail que abriu');
 }
 
 let sentSet = new Set(JSON.parse(localStorage.getItem('ga-sent') || '[]'));
@@ -321,8 +335,6 @@ function refreshPreview(i) {
   body.querySelector('.ep-rendered').innerHTML = buildHtmlEmail(emp, s);
   body.querySelector('.ep-meta-row.subj .val').textContent = buildSubject();
   body.querySelector('.ep-meta-row.para .val').textContent = emp.email;
-  const btn = document.querySelector(`.email-row[data-idx="${i}"] .btn-mailto`);
-  if (btn) btn.href = mailtoHref(emp);
 }
 
 function renderList() {
@@ -344,7 +356,7 @@ function renderList() {
         </div>
         <div class="row-actions">
           ${isSent ? '<span class="row-sent">✓ Enviado</span>' : '<span class="row-sent" style="display:none">✓ Enviado</span>'}
-          <a class="btn btn-mailto" href="${mailtoHref(emp)}" onclick="event.stopPropagation();markSent(${i})">Abrir no e-mail ↗</a>
+          <button class="btn btn-mailto" onclick="event.stopPropagation();openEmailClient(${i})">Abrir no e-mail ↗</button>
           <button class="btn btn-copy" onclick="event.stopPropagation();copyEmail(${i})">Copiar</button>
           <button class="btn btn-toggle">Ver ▾</button>
         </div>

@@ -108,8 +108,23 @@
     <button onclick="next()">Próximo →</button>
   </div>
   <div class="counter" id="counter">01 / 06</div>
-  <button onclick="window.print()">Imprimir</button>
+  <div style="display:flex;gap:8px;">
+    <button onclick="downloadHtml()">Baixar HTML ↓</button>
+    <button onclick="window.print()">Exportar PDF</button>
+  </div>
 </div>
+<script>
+function downloadHtml() {
+  var html = document.documentElement.outerHTML;
+  var blob = new Blob([html], { type: 'text/html' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'apresentacao-global-advising.html';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+</script>
 
 <div class="stack" id="stack">
   <!-- 1: TITLE -->

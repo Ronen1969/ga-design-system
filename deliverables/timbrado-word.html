@@ -122,8 +122,21 @@
 
 <div class="toolbar">
   <button onclick="window.print()">Imprimir / PDF</button>
+  <button onclick="downloadDoc()">Baixar .doc ↓</button>
   <button class="pri" onclick="window.print()">Salvar como PDF</button>
 </div>
+<script>
+function downloadDoc() {
+  var html = document.documentElement.outerHTML;
+  var blob = new Blob(['﻿', html], { type: 'application/msword' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'timbrado-global-advising.doc';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+</script>
 
 <!-- ============= COVER ============= -->
 <div class="page cover-page">

@@ -168,7 +168,19 @@
     color: var(--ga-navy-500);
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    text-decoration: none;
   }
+  .d-open:hover { color: var(--ga-crimson-500); }
+  .d-actions { display: flex; gap: 14px; align-items: center; }
+  .d-download {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ga-crimson-500);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .d-download:hover { text-decoration: underline; }
 
   /* Thumbnail mini visuals */
   .doc-mini {
@@ -316,7 +328,7 @@
   </div>
 
   <div class="deliverable-grid">
-    <a class="d-card" href="deliverables/timbrado-word.html">
+    <div class="d-card" onclick="location.href='deliverables/timbrado-word.html'" style="cursor:pointer;">
       <div class="d-thumb">
         <span class="num">01</span>
         <div class="doc-mini">
@@ -333,11 +345,14 @@
         <div class="d-cap">Timbrado · Word</div>
         <h3 class="d-name">Letterhead para Relatórios</h3>
         <p class="d-desc">Capa + páginas internas com cabeçalho/rodapé corridos, margens 3/2/3/2 cm, escala tipográfica Arial completa, callouts e tabelas.</p>
-        <span class="d-open">Abrir →</span>
+        <div class="d-actions">
+          <a href="deliverables/timbrado-word.html" class="d-open" onclick="event.stopPropagation()">Abrir →</a>
+          <a href="deliverables/timbrado-word.html" download="timbrado-global-advising.doc" class="d-download" onclick="event.stopPropagation()">Baixar .doc ↓</a>
+        </div>
       </div>
-    </a>
+    </div>
 
-    <a class="d-card" href="deliverables/timbrado-powerpoint.html">
+    <div class="d-card" onclick="location.href='deliverables/timbrado-powerpoint.html'" style="cursor:pointer;">
       <div class="d-thumb">
         <span class="num">02</span>
         <div class="deck-mini">
@@ -349,9 +364,12 @@
         <div class="d-cap">Timbrado · PowerPoint</div>
         <h3 class="d-name">Template de Apresentação</h3>
         <p class="d-desc">Seis layouts (capa, agenda, divisor, conteúdo, citação, encerramento) em 1280×720, tipografia Corbel, regras de cor consistentes.</p>
-        <span class="d-open">Abrir →</span>
+        <div class="d-actions">
+          <a href="deliverables/timbrado-powerpoint.html" class="d-open" onclick="event.stopPropagation()">Abrir →</a>
+          <a href="deliverables/timbrado-powerpoint.html" download="apresentacao-global-advising.html" class="d-download" onclick="event.stopPropagation()">Baixar HTML ↓</a>
+        </div>
       </div>
-    </a>
+    </div>
 
     <a class="d-card" href="deliverables/como-usar.html" style="border-top: 3px solid var(--ga-crimson-500);">
       <div class="d-thumb" style="background:var(--ga-crimson-100);">
