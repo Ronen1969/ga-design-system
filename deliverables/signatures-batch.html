@@ -327,14 +327,14 @@ function buildSig(d) {
   const dept  = d.dept  ? `<div style="font-size:11px;color:${gray};margin-top:2px;">${d.dept}</div>` : '';
   return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;color:${black};">
   <tr>
-    <td style="padding:0 18px 0 0;border-right:2px solid ${crimson};vertical-align:top;">
-      <img src="${LOGO_URL}" width="180" alt="Global Advising" style="display:block;border:0;">
+    <td style="padding:0 14px 0 0;border-right:2px solid ${crimson};vertical-align:middle;">
+      <img src="${LOGO_URL}" width="130" height="49" alt="Global Advising" style="display:block;border:0;">
     </td>
-    <td style="padding:0 0 0 18px;vertical-align:top;">
-      <div style="font-size:14px;font-weight:700;color:${navy};letter-spacing:0.02em;">${d.name}</div>
+    <td style="padding:0 0 0 14px;vertical-align:middle;">
+      <div style="font-size:15px;font-weight:700;color:${navy};letter-spacing:0.02em;">${d.name}</div>
       <div style="font-size:12px;color:${black};margin-top:2px;">${d.role || '&nbsp;'}</div>
       ${dept}
-      <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:10px 0 6px;">More than security</div>
+      <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:6px 0 4px;">More than security</div>
       <div style="font-size:11px;color:${black};line-height:1.55;">
         ${phone}<span style="color:${gray};">E</span>&nbsp;<a href="mailto:${d.email}" style="color:${crimson};text-decoration:none;font-weight:700;">${d.email}</a><br>
         <span style="color:${gray};">W</span>&nbsp;<a href="https://www.gaadvising.com" style="color:${navy};text-decoration:none;font-weight:700;">www.gaadvising.com</a>
