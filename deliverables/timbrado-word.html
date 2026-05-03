@@ -146,35 +146,134 @@
 </div>
 <script>
 async function downloadDoc() {
-  async function toBase64(src) {
+  async function imgToB64(el) {
     try {
-      var r = await fetch(src);
+      var r = await fetch(el.src);
       var b = await r.blob();
       return await new Promise(function(res) {
         var fr = new FileReader();
         fr.onload = function(){ res(fr.result); };
         fr.readAsDataURL(b);
       });
-    } catch(e) { return null; }
+    } catch(e) { return el.src; }
   }
-  var html = document.documentElement.outerHTML;
-  // Inline external CSS so it works when opened locally
-  var links = document.querySelectorAll('link[rel="stylesheet"]');
-  for (var j = 0; j < links.length; j++) {
-    try {
-      var cssText = await (await fetch(links[j].href)).text();
-      html = html.replace(links[j].outerHTML, '<style>' + cssText + '</style>');
-    } catch(e) {}
+
+  var allImgs = document.querySelectorAll('.ga-header img');
+  var wmB64  = allImgs[0] ? await imgToB64(allImgs[0]) : '';
+  var markB64 = allImgs[1] ? await imgToB64(allImgs[1]) : '';
+
+  function hdr(pg, total) {
+    return '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:4pt"><tr>' +
+      '<td><img src="' + wmB64 + '" height="46" width="122" alt="Global Advising" style="height:46px;width:122px"></td>' +
+      '<td align="right"><img src="' + markB64 + '" height="36" width="36" alt="GA" style="height:36px;width:36px"></td>' +
+      '</tr></table>' +
+      '<div style="height:2px;background:#92153A;margin:0 0 18pt 0"></div>';
   }
-  // Embed images as base64
-  var imgs = document.querySelectorAll('img');
-  for (var i = 0; i < imgs.length; i++) {
-    var attr = imgs[i].getAttribute('src');
-    if (!attr) continue;
-    var b64 = await toBase64(imgs[i].src);
-    if (b64) html = html.split(attr).join(b64);
+
+  function ftr(pg, total) {
+    return '<div class="ga-footer">' +
+      '<div class="ftr-pg">Página ' + pg + ' / ' + total + '</div>' +
+      '<div class="ftr-brand">Global Advising &middot; <span style="color:#92153A">More Than Security</span></div>' +
+      '<div>Av. Francisco Matarazzo, 1752 &middot; Cj. 808/809 &middot; Água Branca &middot; São Paulo / SP</div>' +
+      '<div><b>T</b> (11) 3079-4752 &nbsp;&nbsp; <b>E</b> contato@gaadvising.com &nbsp;&nbsp; <b>W</b> www.gaadvising.com</div>' +
+      '</div>';
   }
-  var blob = new Blob(['﻿', html], { type: 'application/msword' });
+
+  var css = [
+    '* { box-sizing: border-box; }',
+    'html,body { margin:0; padding:0; background:#fff; font-family:Arial,Helvetica,sans-serif; color:#1A1A1A; }',
+    '.page { width:21cm; min-height:29.7cm; background:#fff; margin:0 auto 24px; padding:2.2cm 2cm 2.6cm 3cm; position:relative; }',
+    '.page + .page { page-break-before:always; }',
+    '.ga-footer { position:absolute; bottom:1cm; left:3cm; right:2cm; border-top:2px solid #002341; padding-top:6pt; font-size:7.5pt; color:#4A4B4D; line-height:1.5; }',
+    '.ftr-brand { font-weight:700; color:#002341; letter-spacing:0.10em; text-transform:uppercase; margin-bottom:2pt; }',
+    '.ftr-brand b { color:#002341; }',
+    '.ga-footer b { color:#002341; }',
+    '.ftr-pg { position:absolute; right:0; top:6pt; font-weight:700; color:#002341; font-size:7.5pt; }',
+    /* cover */
+    '.cover-cap { display:block; font-size:8pt; font-weight:700; color:#92153A; letter-spacing:0.14em; text-transform:uppercase; margin:2.5cm 0 12pt 0; }',
+    '.cover-title { font-size:28pt; font-weight:700; color:#002341; line-height:1.05; margin:0 0 12pt 0; }',
+    '.cover-sub { font-size:12pt; color:#4A4B4D; line-height:1.4; margin:0 0 3cm 0; }',
+    '.meta-wrap { border-top:2px solid #002341; padding-top:12pt; margin-bottom:1.4cm; }',
+    '.meta-lbl { font-size:7.5pt; font-weight:700; color:#92153A; letter-spacing:0.10em; text-transform:uppercase; margin:0 0 4pt 0; }',
+    '.meta-val { font-weight:700; color:#002341; font-size:11pt; margin:0; }',
+    /* body */
+    '.doc-h1 { font-size:14pt; font-weight:700; color:#002341; margin:0 0 14pt 0; }',
+    '.doc-h2 { font-size:12pt; font-weight:700; color:#92153A; margin:22pt 0 8pt 0; }',
+    '.doc-body { font-size:10pt; line-height:1.5; text-align:justify; margin:0 0 10pt 0; }',
+    '.doc-note { font-size:8pt; font-style:italic; color:#4A4B4D; }',
+    '.doc-cap { font-size:8pt; font-weight:700; color:#92153A; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6pt; }',
+    /* typography guide */
+    '.typo-sec { font-size:9pt; font-weight:700; color:#002341; letter-spacing:0.10em; text-transform:uppercase; border-bottom:2px solid #002341; padding-bottom:5pt; margin:18pt 0 10pt 0; }',
+    '.typo-table { width:100%; border-collapse:collapse; font-size:9pt; margin-bottom:14pt; }',
+    '.typo-table th { text-align:left; font-size:7.5pt; font-weight:700; color:#92153A; letter-spacing:0.08em; text-transform:uppercase; border-bottom:1px solid #BFC8CF; padding:4pt 6pt; }',
+    '.typo-table td { border-bottom:1px solid #EAEDEF; padding:5pt 6pt; vertical-align:middle; }',
+    '.nm { font-size:8pt; font-weight:700; color:#002341; font-family:"Courier New",monospace; }',
+    '.sp { font-size:7.5pt; color:#4A4B4D; font-family:"Courier New",monospace; line-height:1.4; }',
+    '.rule-blk { background:#EAEDEF; border-left:4px solid #002341; padding:8pt 10pt; margin-bottom:8pt; font-size:9pt; line-height:1.5; }',
+    '.rule-blk .rt { font-weight:700; color:#002341; margin:0 0 3pt 0; font-size:8.5pt; text-transform:uppercase; letter-spacing:0.06em; }',
+    '.rule-blk.warn { background:#F4E7EB; border-left-color:#92153A; }',
+    '.rule-blk.warn .rt { color:#92153A; }'
+  ].join('\n');
+
+  /* PAGE 1 — blank cover template */
+  var p1 = '<div class="page">' + hdr(1,3) +
+    '<span class="cover-cap">Relat&oacute;rio de Consultoria</span>' +
+    '<h1 class="cover-title">[T&iacute;tulo do Documento]</h1>' +
+    '<p class="cover-sub">[Subt&iacute;tulo ou descri&ccedil;&atilde;o breve do escopo]</p>' +
+    '<div class="meta-wrap">' +
+    '<table width="100%" cellpadding="0" cellspacing="0"><tr>' +
+    '<td width="33%" style="vertical-align:top;padding-right:8pt"><p class="meta-lbl">Cliente</p><p class="meta-val">[Nome do Cliente]</p></td>' +
+    '<td width="33%" style="vertical-align:top;padding-right:8pt"><p class="meta-lbl">Data</p><p class="meta-val">[DD/MM/AAAA]</p></td>' +
+    '<td width="33%" style="vertical-align:top"><p class="meta-lbl">Refer&ecirc;ncia</p><p class="meta-val">[GA-XXXX]</p></td>' +
+    '</tr></table></div>' +
+    ftr(1,3) + '</div>';
+
+  /* PAGE 2 — blank body template */
+  var p2 = '<div class="page">' + hdr(2,3) +
+    '<h1 class="doc-h1">[T&iacute;tulo Principal]</h1>' +
+    '<p class="doc-body">&nbsp;</p><p class="doc-body">&nbsp;</p>' +
+    '<p class="doc-h2">[1. Se&ccedil;&atilde;o]</p>' +
+    '<p class="doc-body">&nbsp;</p><p class="doc-body">&nbsp;</p>' +
+    '<p class="doc-h2">[2. Se&ccedil;&atilde;o]</p>' +
+    '<p class="doc-body">&nbsp;</p><p class="doc-body">&nbsp;</p>' +
+    '<p class="doc-note">Fonte: &nbsp;&nbsp;&nbsp; Data: &nbsp;&nbsp;&nbsp; Refer&ecirc;ncia:</p>' +
+    ftr(2,3) + '</div>';
+
+  /* PAGE 3 — typography & brand guide */
+  var p3 = '<div class="page">' + hdr(3,3) +
+    '<h1 class="doc-h1">Guia de Tipografia e Identidade Visual</h1>' +
+    '<p class="doc-body" style="margin-bottom:4pt">Este timbrado usa exclusivamente <strong>Arial</strong>. As especifica&ccedil;&otilde;es abaixo s&atilde;o obrigat&oacute;rias para todos os documentos formais da Global Advising.</p>' +
+    '<div class="typo-sec">Estilos tipogr&aacute;ficos</div>' +
+    '<table class="typo-table"><thead><tr><th width="22%">Estilo</th><th width="38%">Especifica&ccedil;&atilde;o</th><th>Amostra</th></tr></thead><tbody>' +
+    '<tr><td class="nm">cover-cap</td><td class="sp">Arial Bold &middot; 8pt &middot; Crimson<br>CAIXA ALTA &middot; tracking 0.14em</td><td style="font-size:8pt;font-weight:700;color:#92153A;letter-spacing:0.14em;text-transform:uppercase">CATEGORIA DO RELAT&Oacute;RIO</td></tr>' +
+    '<tr><td class="nm">cover-title</td><td class="sp">Arial Bold &middot; 28pt &middot; Navy<br>leading 1.05</td><td style="font-size:16pt;font-weight:700;color:#002341;line-height:1.1">T&iacute;tulo de Capa</td></tr>' +
+    '<tr><td class="nm">doc-h1</td><td class="sp">Arial Bold &middot; 14pt &middot; Navy</td><td style="font-size:12pt;font-weight:700;color:#002341">T&iacute;tulo Principal</td></tr>' +
+    '<tr><td class="nm">doc-h2</td><td class="sp">Arial Bold &middot; 12pt &middot; Crimson</td><td style="font-size:10pt;font-weight:700;color:#92153A">1. Se&ccedil;&atilde;o do Documento</td></tr>' +
+    '<tr><td class="nm">doc-body</td><td class="sp">Arial Regular &middot; 10pt &middot; Black<br>leading 1.5 &middot; justificado</td><td style="font-size:10pt">Texto de corpo padr&atilde;o.</td></tr>' +
+    '<tr><td class="nm">doc-cap</td><td class="sp">Arial Bold &middot; 8pt &middot; Crimson<br>CAIXA ALTA &middot; tracking 0.08em</td><td style="font-size:8pt;font-weight:700;color:#92153A;text-transform:uppercase;letter-spacing:0.08em">Legenda de Tabela</td></tr>' +
+    '<tr><td class="nm">doc-note</td><td class="sp">Arial Italic &middot; 8pt &middot; Gray</td><td style="font-size:8pt;font-style:italic;color:#4A4B4D">Nota de rodap&eacute;.</td></tr>' +
+    '</tbody></table>' +
+    '<div class="typo-sec">Paleta de cores</div>' +
+    '<table width="100%" cellpadding="0" cellspacing="4" style="margin-bottom:14pt"><tr>' +
+    '<td align="center" style="padding:0 4pt 8pt"><div style="height:28pt;background:#002341;border-radius:2px;margin-bottom:3pt"></div><div style="font-size:7.5pt;font-weight:700;color:#002341">Navy</div><div style="font-size:7pt;color:#4A4B4D;font-family:Courier New,monospace">#002341</div></td>' +
+    '<td align="center" style="padding:0 4pt 8pt"><div style="height:28pt;background:#92153A;border-radius:2px;margin-bottom:3pt"></div><div style="font-size:7.5pt;font-weight:700;color:#002341">Crimson</div><div style="font-size:7pt;color:#4A4B4D;font-family:Courier New,monospace">#92153A</div></td>' +
+    '<td align="center" style="padding:0 4pt 8pt"><div style="height:28pt;background:#4A4B4D;border-radius:2px;margin-bottom:3pt"></div><div style="font-size:7.5pt;font-weight:700;color:#002341">Gray</div><div style="font-size:7pt;color:#4A4B4D;font-family:Courier New,monospace">#4A4B4D</div></td>' +
+    '<td align="center" style="padding:0 4pt 8pt"><div style="height:28pt;background:#1A1A1A;border-radius:2px;margin-bottom:3pt"></div><div style="font-size:7.5pt;font-weight:700;color:#002341">Black</div><div style="font-size:7pt;color:#4A4B4D;font-family:Courier New,monospace">#1A1A1A</div></td>' +
+    '<td align="center" style="padding:0 4pt 8pt"><div style="height:28pt;background:#EAEDEF;border:1px solid #dde1e7;border-radius:2px;margin-bottom:3pt"></div><div style="font-size:7.5pt;font-weight:700;color:#002341">Navy 50</div><div style="font-size:7pt;color:#4A4B4D;font-family:Courier New,monospace">#EAEDEF</div></td>' +
+    '<td align="center" style="padding:0 4pt 8pt"><div style="height:28pt;background:#fff;border:1px solid #dde1e7;border-radius:2px;margin-bottom:3pt"></div><div style="font-size:7.5pt;font-weight:700;color:#002341">Branco</div><div style="font-size:7pt;color:#4A4B4D;font-family:Courier New,monospace">#FFFFFF</div></td>' +
+    '</tr></table>' +
+    '<div class="typo-sec">Regras obrigat&oacute;rias</div>' +
+    '<div class="rule-blk"><p class="rt">Fonte exclusiva</p>Use somente <strong>Arial</strong>. Nunca substitua por Times New Roman, Calibri ou outras fontes do sistema.</div>' +
+    '<div class="rule-blk"><p class="rt">Hierarquia de t&iacute;tulos</p>H1 (14pt Navy) &rarr; H2 (12pt Crimson) &rarr; Corpo (10pt Black). N&atilde;o pule n&iacute;veis.</div>' +
+    '<div class="rule-blk"><p class="rt">Margens da p&aacute;gina</p>Esquerda 3 cm &middot; Direita 2 cm &middot; Superior 2,4 cm &middot; Inferior 2,6 cm.</div>' +
+    '<div class="rule-blk warn"><p class="rt">Proibido</p>N&atilde;o altere cores fora da paleta. N&atilde;o remova o logotipo. Crimson &eacute; reservado a t&iacute;tulos H2 e r&oacute;tulos &mdash; nunca para texto de corpo.</div>' +
+    ftr(3,3) + '</div>';
+
+  var docHtml = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">' +
+    '<title>Timbrado · Global Advising</title>' +
+    '<style>' + css + '</style></head><body>' + p1 + p2 + p3 + '</body></html>';
+
+  var blob = new Blob(['﻿', docHtml], { type: 'application/msword' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url; a.download = 'timbrado-global-advising.doc';

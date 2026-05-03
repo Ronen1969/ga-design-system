@@ -303,6 +303,26 @@
 </div>
 <script>
 async function downloadDoc() {
+  var wordFallback = [
+    '.toolbar{display:none!important}',
+    'body{background:#fff!important;padding:0!important}',
+    '.page{box-shadow:none!important}',
+    '.ga-header .wordmark{height:46px!important;width:auto!important}',
+    '.ga-header .mark{height:36px!important;width:36px!important}',
+    '.header-rule{background:#92153A!important}',
+    '.ga-footer,.page-footer{border-top-color:#002341!important;color:#4A4B4D!important}',
+    '.ga-footer .brand,.footer-brand{color:#002341!important}',
+    '.ga-footer .strap,.footer-strap{color:#92153A!important}',
+    '.ga-footer b,.page-footer b{color:#002341!important}',
+    '.page-num{color:#002341!important}',
+    'h2,h3,.section-title,.rule-title{color:#92153A!important}',
+    'h1,.page-title{color:#002341!important}',
+    '.label,.cap{color:#92153A!important}',
+    '.note,.meta{color:#4A4B4D!important}',
+    '.navy-rule,.rule-line{background:#002341!important}',
+    '.crimson-rule{background:#92153A!important}'
+  ].join('\n');
+
   async function toBase64(src) {
     try {
       var r = await fetch(src);
@@ -315,15 +335,16 @@ async function downloadDoc() {
     } catch(e) { return null; }
   }
   var html = document.documentElement.outerHTML;
-  // Inline external CSS so it works when opened locally
   var links = document.querySelectorAll('link[rel="stylesheet"]');
   for (var j = 0; j < links.length; j++) {
     try {
       var cssText = await (await fetch(links[j].href)).text();
-      html = html.replace(links[j].outerHTML, '<style>' + cssText + '</style>');
+      html = html.replace(links[j].outerHTML, '<style>' + cssText + '\n' + wordFallback + '</style>');
     } catch(e) {}
   }
-  // Embed images as base64
+  // Force image dimensions via HTML attributes
+  html = html.replace(/ class="wordmark" src=/g, ' class="wordmark" height="46" width="122" src=');
+  html = html.replace(/ class="mark" src=/g, ' class="mark" height="36" width="36" src=');
   var imgs = document.querySelectorAll('img');
   for (var i = 0; i < imgs.length; i++) {
     var attr = imgs[i].getAttribute('src');
