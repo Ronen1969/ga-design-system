@@ -208,107 +208,133 @@ function getSender() {
 
 /* ── BRANDED HTML EMAIL ── */
 function buildHtmlEmail(emp, sender) {
-  const navy = '#002341', crimson = '#92153A', black = '#1A1A1A', gray = '#4A4B4D', divider = '#BFC8CF', bg = '#EAEDEF';
+  const navy = '#002341', crimson = '#92153A', black = '#1A1A1A', gray = '#4A4B4D', divider = '#BFC8CF', bg = '#EAEDEF', bgLight = '#F4F6F8';
   const link    = SIG_BASE + anchor(emp.email);
   const logoUrl = BASE_URL + '/assets/logo-global-advising.png';
+
+  function block(num, label, title, desc, when, howItems, linkHref, linkLabel, accentColor) {
+    const howRows = howItems.map((s,i) =>
+      `<tr><td style="padding:2px 0;font-size:13px;color:${black};">
+        <span style="font-family:monospace;font-size:11px;font-weight:700;color:${accentColor};margin-right:6px;">${i+1}.</span>${s}
+      </td></tr>`).join('');
+    const btn = linkLabel
+      ? `<a href="${linkHref}" style="display:inline-block;background:${accentColor};color:#fff;font-weight:700;font-size:12px;letter-spacing:0.06em;text-decoration:none;padding:9px 18px;border-radius:2px;margin-top:12px;">${linkLabel} →</a>`
+      : `<div style="margin-top:10px;"><a href="${linkHref}" style="color:${accentColor};font-weight:700;font-size:12px;text-decoration:none;">${linkHref.replace(BASE_URL+'/','')} →</a></div>`;
+    return `<tr>
+    <td style="padding:0 0 10px 0;">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td style="border-left:4px solid ${accentColor};border-radius:0 4px 4px 0;padding:14px 18px;background:${accentColor === crimson ? bg : bgLight};">
+          <div style="font-size:9px;font-weight:700;color:${accentColor};letter-spacing:0.16em;text-transform:uppercase;margin-bottom:4px;">${num} · ${label}</div>
+          <div style="font-size:15px;font-weight:700;color:${navy};margin-bottom:8px;">${title}</div>
+          <div style="font-size:13px;color:${black};margin-bottom:8px;">${desc}</div>
+          <div style="font-size:11px;font-weight:700;color:${gray};letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Quando usar</div>
+          <div style="font-size:13px;color:${black};margin-bottom:10px;">${when}</div>
+          <div style="font-size:11px;font-weight:700;color:${gray};letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Como usar</div>
+          <table cellpadding="0" cellspacing="0" border="0">${howRows}</table>
+          ${btn}
+        </td>
+      </tr></table>
+    </td>
+  </tr>`;
+  }
+
   return `<table cellpadding="0" cellspacing="0" border="0" width="600" style="font-family:Arial,Helvetica,sans-serif;color:${black};font-size:14px;line-height:1.6;max-width:600px;">
 
   <!-- HEADER -->
   <tr>
-    <td style="padding:0 0 16px 0;border-bottom:2px solid ${crimson};">
+    <td style="padding:0 0 14px 0;border-bottom:2px solid ${crimson};">
       <img src="${logoUrl}" width="160" alt="Global Advising" style="display:block;border:0;">
     </td>
   </tr>
 
-  <!-- GREETING -->
+  <!-- INTRO -->
   <tr>
-    <td style="padding:24px 0 0 0;">
-      <p style="margin:0 0 14px 0;">${firstName(emp.name)},</p>
-      <p style="margin:0 0 20px 0;">O sistema de marca <strong style="color:${navy};">Global Advising 2026</strong> está disponível. Todos os recursos abaixo já estão configurados com a identidade visual correta — basta acessar e usar.</p>
+    <td style="padding:22px 0 18px 0;">
+      <p style="margin:0 0 12px 0;font-size:14px;">${firstName(emp.name)},</p>
+      <p style="margin:0 0 10px 0;font-size:14px;">A <strong style="color:${navy};">Global Advising</strong> está adotando a partir de agora uma <strong style="color:${navy};">nova identidade visual unificada</strong>. Toda comunicação da empresa — e-mails, relatórios e apresentações — passa a seguir o novo padrão de marca.</p>
+      <p style="margin:0 0 0 0;font-size:13px;color:${gray};">Este e-mail reúne os quatro recursos que você precisa. Leia com atenção: cada um tem um propósito específico e substitui os formatos anteriores.</p>
     </td>
   </tr>
 
-  <!-- ASSINATURA CTA -->
-  <tr>
-    <td style="padding:0 0 12px 0;">
-      <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-          <td style="background:${bg};border-left:4px solid ${crimson};border-radius:0 4px 4px 0;padding:16px 20px;">
-            <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;">01 · Prioridade imediata</div>
-            <div style="font-size:15px;font-weight:700;color:${navy};margin-bottom:8px;">Assinatura de E-mail · ${emp.name}</div>
-            <div style="font-size:13px;color:${black};margin-bottom:14px;">
-              1. Acesse o link abaixo<br>
-              2. Preencha cargo, departamento e telefone<br>
-              3. Clique <strong style="color:${navy};">"Copiar assinatura"</strong> e cole no Outlook ou Gmail
-            </div>
-            <a href="${link}" style="display:inline-block;background:${crimson};color:#fff;font-weight:700;font-size:12px;letter-spacing:0.06em;text-decoration:none;padding:10px 20px;border-radius:2px;">Configurar minha assinatura →</a>
-            <div style="margin-top:10px;font-size:11px;color:${gray};word-break:break-all;">${link}</div>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
+  ${block(
+    '01', 'Ação imediata',
+    'Assinatura de E-mail — ' + emp.name,
+    'Assinatura padronizada com logo, nome, cargo e contatos. Deve substituir qualquer assinatura anterior no seu cliente de e-mail (Outlook, Gmail ou outro).',
+    'Em <strong style="color:' + navy + ';">todo e-mail enviado</strong> a partir de hoje — para clientes, parceiros e uso interno.',
+    [
+      'Acesse seu link pessoal abaixo',
+      'Preencha cargo, departamento e telefone',
+      'Clique <strong>"Copiar assinatura"</strong>',
+      'Abra o Outlook → Configurações → Assinaturas → Cole (Ctrl+V)',
+    ],
+    link, 'Configurar minha assinatura', crimson
+  )}
 
-  <!-- TEMPLATES -->
-  <tr>
-    <td style="padding:0 0 20px 0;">
-      <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-          <td style="background:#F8F9FA;border-left:4px solid ${navy};border-radius:0 4px 4px 0;padding:16px 20px;">
-            <div style="font-size:10px;font-weight:700;color:${navy};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;">02 · Templates de Marca</div>
-            <table cellpadding="0" cellspacing="0" border="0" width="100%">
-              <tr>
-                <td style="padding:7px 0;border-bottom:1px solid ${divider};">
-                  <a href="${BASE_URL}/deliverables/timbrado-word.html" style="color:${navy};font-weight:700;font-size:13px;text-decoration:none;">Letterhead Word →</a>
-                  <span style="font-size:12px;color:${gray};">&nbsp;&nbsp;relatórios e documentos a clientes</span>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:7px 0;border-bottom:1px solid ${divider};">
-                  <a href="${BASE_URL}/deliverables/timbrado-powerpoint.html" style="color:${navy};font-weight:700;font-size:13px;text-decoration:none;">Template PowerPoint →</a>
-                  <span style="font-size:12px;color:${gray};">&nbsp;&nbsp;decks e apresentações executivas</span>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:7px 0;">
-                  <a href="${BASE_URL}/deliverables/como-usar.html" style="color:${navy};font-weight:700;font-size:13px;text-decoration:none;">Guia de Marca →</a>
-                  <span style="font-size:12px;color:${gray};">&nbsp;&nbsp;referência rápida — imprimir ou salvar como PDF</span>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
+  ${block(
+    '02', 'Documentos a clientes',
+    'Letterhead Word — Relatórios e Documentos',
+    'Template oficial para qualquer documento formal entregue a clientes: avaliações de risco, laudos, propostas comerciais e relatórios. Inclui capa, cabeçalho e rodapé já configurados com a identidade GA.',
+    '<strong style="color:' + navy + ';">Todo documento enviado a clientes</strong> deve usar este template. Não utilize mais o formato antigo nem documentos sem timbrado.',
+    [
+      'Abra o link e visualize o template',
+      'Substitua os dados de exemplo (cliente, referência GA-XXXX, data)',
+      'Edite títulos, texto e tabelas mantendo a estrutura',
+      'Pressione Ctrl+P → "Salvar como PDF" → envie ao cliente',
+    ],
+    BASE_URL + '/deliverables/timbrado-word.html', 'Acessar template Word', navy
+  )}
+
+  ${block(
+    '03', 'Apresentações e decks',
+    'Template PowerPoint — Apresentações Executivas',
+    '6 layouts prontos: capa, agenda, divisor de seção, conteúdo com dados, citação e encerramento. Toda a tipografia, paleta de cores e posicionamento já estão configurados conforme a marca GA.',
+    '<strong style="color:' + navy + ';">Toda apresentação</strong> — reuniões com clientes, briefings internos, propostas — deve ser criada a partir deste template.',
+    [
+      'Acesse o link e visualize os 6 layouts com as setas ← →',
+      'Edite títulos, textos e dados diretamente no HTML',
+      'Para exportar: Ctrl+P → "Salvar como PDF" (modo paisagem)',
+    ],
+    BASE_URL + '/deliverables/timbrado-powerpoint.html', 'Acessar template PowerPoint', navy
+  )}
+
+  ${block(
+    '04', 'Referência de marca',
+    'Guia de Marca — Regras e Padrões GA',
+    'Documento de referência em uma página com todas as regras de identidade visual: paleta de cores com códigos, tipografia permitida, ícones oficiais, tom de voz e boas práticas editoriais.',
+    'Consulte sempre que criar qualquer material de comunicação — apresentação, e-mail, documento, post ou anúncio. Imprima e mantenha como referência na sua mesa.',
+    [
+      'Acesse o link',
+      'Clique em "Salvar como PDF" ou "Imprimir"',
+      'Use como referência visual para qualquer material novo',
+    ],
+    BASE_URL + '/deliverables/como-usar.html', 'Acessar guia de marca', navy
+  )}
 
   <!-- CLOSING -->
   <tr>
-    <td style="padding:0 0 6px 0;">
-      <p style="margin:0 0 4px 0;font-size:13px;">Dúvidas? Responda este e-mail.</p>
-      <p style="margin:0 0 24px 0;font-size:13px;">Atenciosamente,</p>
+    <td style="padding:8px 0 6px 0;">
+      <p style="margin:0 0 4px 0;font-size:13px;">Dúvidas sobre algum dos recursos? Responda este e-mail.</p>
+      <p style="margin:0 0 22px 0;font-size:13px;">Atenciosamente,</p>
     </td>
   </tr>
 
-  <!-- SENDER SIGNATURE — padrão GA -->
+  <!-- SENDER SIGNATURE -->
   <tr>
     <td style="padding-top:18px;border-top:1px solid ${divider};">
-      <table cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td style="padding:0 14px 0 0;border-right:2px solid ${crimson};vertical-align:middle;">
-            <img src="${logoUrl}" width="130" height="49" alt="Global Advising" style="display:block;border:0;">
-          </td>
-          <td style="padding:0 0 0 14px;vertical-align:middle;font-family:Arial,Helvetica,sans-serif;">
-            <div style="font-size:15px;font-weight:700;color:${navy};">${sender.name}</div>
-            <div style="font-size:12px;color:${black};margin-top:2px;">${sender.role}</div>
-            <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:6px 0 4px;">More than security</div>
-            <div style="font-size:11px;color:${black};line-height:1.55;">
-              <span style="color:${gray};">E</span>&nbsp;<a href="mailto:contato@gaadvising.com" style="color:${crimson};text-decoration:none;font-weight:700;">contato@gaadvising.com</a><br>
-              <span style="color:${gray};">W</span>&nbsp;<a href="https://www.gaadvising.com" style="color:${navy};text-decoration:none;font-weight:700;">www.gaadvising.com</a>
-            </div>
-          </td>
-        </tr>
-      </table>
+      <table cellpadding="0" cellspacing="0" border="0"><tr>
+        <td style="padding:0 14px 0 0;border-right:2px solid ${crimson};vertical-align:middle;">
+          <img src="${logoUrl}" width="130" height="49" alt="Global Advising" style="display:block;border:0;">
+        </td>
+        <td style="padding:0 0 0 14px;vertical-align:middle;font-family:Arial,Helvetica,sans-serif;">
+          <div style="font-size:15px;font-weight:700;color:${navy};">${sender.name}</div>
+          <div style="font-size:12px;color:${black};margin-top:2px;">${sender.role}</div>
+          <div style="font-size:10px;font-weight:700;color:${crimson};letter-spacing:0.10em;text-transform:uppercase;margin:6px 0 4px;">More than security</div>
+          <div style="font-size:11px;color:${black};line-height:1.55;">
+            <span style="color:${gray};">E</span>&nbsp;<a href="mailto:contato@gaadvising.com" style="color:${crimson};text-decoration:none;font-weight:700;">contato@gaadvising.com</a><br>
+            <span style="color:${gray};">W</span>&nbsp;<a href="https://www.gaadvising.com" style="color:${navy};text-decoration:none;font-weight:700;">www.gaadvising.com</a>
+          </div>
+        </td>
+      </tr></table>
     </td>
   </tr>
 
@@ -319,32 +345,57 @@ function buildPlainText(emp, sender) {
   const link = SIG_BASE + anchor(emp.email);
   return `${firstName(emp.name)},
 
-O sistema de marca Global Advising 2026 está disponível. Todos os recursos abaixo já estão configurados com a identidade visual correta.
+A Global Advising está adotando uma nova identidade visual unificada. Toda comunicação da empresa — e-mails, relatórios e apresentações — passa a seguir o novo padrão de marca a partir de agora.
 
-─────────────────────────────────────
-01 · ASSINATURA DE E-MAIL (prioridade)
-─────────────────────────────────────
-Seu link direto: ${link}
+Este e-mail reúne os quatro recursos que você precisa para fazer a transição.
 
-Passos:
-1. Acesse o link
+═══════════════════════════════════════
+01 · ASSINATURA DE E-MAIL — AÇÃO IMEDIATA
+═══════════════════════════════════════
+Substitui qualquer assinatura anterior. Use em todo e-mail enviado a partir de hoje.
+
+Seu link pessoal: ${link}
+
+Como configurar:
+1. Acesse seu link pessoal acima
 2. Preencha cargo, departamento e telefone
-3. Clique "Copiar assinatura" e cole no Outlook ou Gmail
+3. Clique "Copiar assinatura"
+4. Abra o Outlook > Configurações > Assinaturas > Cole (Ctrl+V)
 
-─────────────────────────────────────
-02 · TEMPLATES DE MARCA
-─────────────────────────────────────
-Letterhead Word (relatórios a clientes):
-${BASE_URL}/deliverables/timbrado-word.html
+═══════════════════════════════════════
+02 · LETTERHEAD WORD — RELATÓRIOS E DOCUMENTOS
+═══════════════════════════════════════
+Template oficial para documentos a clientes: avaliações, laudos, propostas e relatórios. Substitui o formato antigo. Não envie mais documentos sem timbrado.
 
-Template PowerPoint (decks e apresentações):
-${BASE_URL}/deliverables/timbrado-powerpoint.html
+Link: ${BASE_URL}/deliverables/timbrado-word.html
 
-Guia de Marca (referência rápida / PDF):
-${BASE_URL}/deliverables/como-usar.html
+Como usar:
+1. Abra o link e visualize o template
+2. Substitua os dados de exemplo (cliente, referência GA-XXXX, data)
+3. Edite o conteúdo mantendo a estrutura
+4. Ctrl+P > "Salvar como PDF" > envie ao cliente
 
-─────────────────────────────────────
-Dúvidas? Responda este e-mail.
+═══════════════════════════════════════
+03 · TEMPLATE POWERPOINT — APRESENTAÇÕES
+═══════════════════════════════════════
+6 layouts prontos (capa, agenda, conteúdo, citação, encerramento). Use como base para toda apresentação — reuniões com clientes ou internas.
+
+Link: ${BASE_URL}/deliverables/timbrado-powerpoint.html
+
+Como usar:
+1. Acesse o link e navegue pelos layouts com as setas
+2. Edite títulos, textos e dados
+3. Ctrl+P > "Salvar como PDF" (modo paisagem)
+
+═══════════════════════════════════════
+04 · GUIA DE MARCA — REFERÊNCIA
+═══════════════════════════════════════
+Regras de cor, tipografia, ícones e tom de voz em uma página. Imprima e use como referência sempre que criar qualquer material.
+
+Link: ${BASE_URL}/deliverables/como-usar.html
+
+═══════════════════════════════════════
+Dúvidas sobre algum recurso? Responda este e-mail.
 
 Atenciosamente,
 ${sender.name}
@@ -353,7 +404,7 @@ contato@gaadvising.com · www.gaadvising.com`;
 }
 
 function buildSubject() {
-  return 'Ação necessária: configure sua assinatura de e-mail GA';
+  return 'Global Advising — Nova identidade visual: kit completo para a equipe';
 }
 
 async function openEmailClient(i) {
